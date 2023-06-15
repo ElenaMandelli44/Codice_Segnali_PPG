@@ -60,3 +60,6 @@ def compute_loss(model, x):
     kl_weight = 0.01  # Weight to balance the importance of KL divergence
     total_loss = mse_loss + kl_weight * kl_divergence
     return mse_loss
+
+
+def train_step(model, x, optimizer):
