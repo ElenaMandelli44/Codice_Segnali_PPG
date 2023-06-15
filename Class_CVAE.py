@@ -30,6 +30,16 @@ class CVAE(Model):
             conv_layers.append(tf.keras.layers.Conv1D(**conv_settings))
 
             linear_layers = []
+            
+                """
+                    A sequential model is created, starting with an input layer (tf.keras.layers.InputLayer) that specifies the shape of the input. 
+                    The elements of the conv_layers list are then added to the model. 
+                    A flattening layer is added to convert the output of the convolutional layers into a vector.
+
+                    Next, the elements of the linear_layers list are added to the model. 
+                    The last layer is a dense layer (tf.keras.layers.Dense) with size latent_dim + latent_dim.
+                    This layer returns the mean and log variance of the latent distribution.
+                 """
             for linear_settings in linear_layers_settings:
                 linear_layers.append(tf.keras.layers.Dense(**linear_settings))
 
