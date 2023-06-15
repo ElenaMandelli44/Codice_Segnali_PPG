@@ -14,3 +14,15 @@ def generate_and_save_images(model, epoch, test_sample):
     ax[i,1].plot(predictions[i, :, 0])
 
   plt.show()
+
+  
+  def generate_samples(model, sample, n):
+    result_x = []
+    result_y = []
+    mean, logvar = model.encode(sample[:,:input_dim,:])
+    for i in range(n):
+        z = model.reparameterize(mean, logvar)
+        predictions = model.sample(z)
+        result_x.append(predictions.numpy())
+        result_y.append(z.numpy())
+    return np.concatenate(result_x), np.concatenate(result_y)
