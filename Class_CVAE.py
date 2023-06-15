@@ -70,19 +70,62 @@ class CVAE(Model):
 
   @tf.function
   def sample(self, eps=None):
+               
+       """Generate samples from the learned distribution.
+
+        Args:
+            eps (tf.Tensor): Random samples from the latent distribution. If None, new samples are generated.
+
+        Returns:
+            tf.Tensor: Generated samples.
+        """         
+               
     if eps is None:
       eps = tf.random.normal(shape=(100, self.latent_dim))
     return self.decode(eps, apply_sigmoid=True)
 
   def encode(self, x):
+      """
+        Encode the input data and compute mean and log variance of the latent distribution.
+
+        Args:
+            x (tf.Tensor): Input data.
+
+        Returns:
+            tuple: Mean and log variance of the latent distribution.
+        """         
+               
     mean, logvar = tf.split(self.encoder(x), num_or_size_splits=2, axis=1)
     return mean, logvar
 
   def reparameterize(self, mean, logvar):
+      """
+        Reparameterization trick for sampling from the latent distribution.
+
+        Args:
+            mean (tf.Tensor): Mean of the latent distribution.
+            logvar (tf.Tensor): Log variance of the latent distribution.
+
+        Returns:
+            tf.Tensor: Sampled latent vector.
+        """
+               
+      
     eps = tf.random.normal(shape=mean.shape)
     return eps * tf.exp(logvar * .5) + mean
 
   def decode(self, z, apply_sigmoid=False):
+       """
+        Decode the latent vector and reconstruct the input data.
+
+        Args:
+            z (tf.Tensor): Latent vector.
+            apply_sigmoid (bool): Whether to apply sigmoid activation to the output.
+
+        Returns:
+            tf.Tensor: Reconstructed input data.
+        """        
+               
     logits = self.decoder(z)
     if apply_sigmoid:
       probs = tf.sigmoid(logits)
