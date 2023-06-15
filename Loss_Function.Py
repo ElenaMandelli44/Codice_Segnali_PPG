@@ -63,3 +63,24 @@ def compute_loss(model, x):
 
 
 def train_step(model, x, optimizer):
+    """
+    Perform one training step.
+
+    Args:
+        model (CVAE): CVAE model.
+        x (tf.Tensor): Input data.
+        optimizer (tf.keras.optimizers.Optimizer): Optimizer.
+
+    Returns:
+        tf.Tensor: Loss value.
+        
+      It uses TensorFlow's GradientTape to record the operations for automatic differentiation. 
+      The loss is computed using the compute_loss function, and the gradients of the loss with respect to the trainable variables of the model are calculated.
+      The optimizer applies the gradients to update the model's trainable variables.   
+        
+    """
+    with tf.GradientTape() as tape:
+        loss = compute_loss(model, x)
+    gradients = tape.gradient(loss, model.trainable_variables)
+    optimizer.apply_gradients(zip(gradients, model.trainable_variables))
+    
