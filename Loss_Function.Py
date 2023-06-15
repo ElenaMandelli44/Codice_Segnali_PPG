@@ -2,6 +2,25 @@ import tensorflow as tf
 import numpy as np
 
 
+def log_normal_pdf(sample, mean, logvar, raxis=1):
+    """Compute the log probability density function of a normal distribution.
+
+    Args:
+        sample (tf.Tensor): Sampled values.
+        mean (tf.Tensor): Mean of the distribution.
+        logvar (tf.Tensor): Log variance of the distribution.
+        raxis (int): Axis to reduce.
+
+    Returns:
+        tf.Tensor: Log probability density function.
+    """
+    log2pi = tf.math.log(2. * np.pi)
+    return tf.reduce_sum(
+        -.5 * ((sample - mean) ** 2. * tf.exp(-logvar) + logvar + log2pi),
+        axis=raxis
+    )
+
+
 def compute_loss(model, x):
     x_x = x[:, :input_dim, :]
     y = x[:, input_dim:, 0]
