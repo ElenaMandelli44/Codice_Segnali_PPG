@@ -22,6 +22,17 @@ def log_normal_pdf(sample, mean, logvar, raxis=1):
 
 
 def compute_loss(model, x):
+    """Compute the loss function for the CVAE model.
+
+        Args:
+            model (CVAE): CVAE model.
+            x (tf.Tensor): Input data.
+
+        Returns:
+            tf.Tensor: Loss value.
+    """
+    
+    
     x_x = x[:, :input_dim, :]
     y = x[:, input_dim:, 0]
     x = x_x
