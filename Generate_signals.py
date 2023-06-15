@@ -16,6 +16,22 @@ generate_and_save_images(model, epoch, random_sample)
 
 
 def generate_samples_from_age(model, train_labels, age, n):
+   
+      """
+    Generate samples from the model with a specific age.
+
+    Args:
+        model (CVAE): The neural network model.
+        train_labels (DataFrame): Training labels data.
+        age (int): Age value to be used for generating samples.
+        n (int): Number of samples to generate.
+
+    Returns:
+        ndarray: Generated samples (predictions).
+        ndarray: Corresponding latent vectors for the generated samples.
+    """
+   
+   
    result_x = []
    result_y = []
    for i in range(n):
