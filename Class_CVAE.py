@@ -65,13 +65,26 @@ class CVAE(Model):
           ]
       )              
 
+# The CVAE model can also be used to generate new samples from the learned distribution using the sample() method.
 
-    def sample(self, z_mean, z_log_var):
-        epsilon = K.random_normal(shape=(K.shape(z_mean)[0], self.latent_dim))
-        return z_mean + K.exp(0.5 * z_log_var) * epsilon
 
-    def call(self, inputs):
-        z_mean, z_log_var = self.encoder(inputs)
-        z = self.sample(z_mean, z_log_var)
-        reconstructed = self.decoder(z)
-        return reconstructed
+  @tf.function
+  def sample(self, eps=None):
+    if eps is None:
+      eps = tf.random.normal(shape=(100, self.latent_dim))
+    return self.decode(eps, apply_sigmoid=True)
+
+  def encode(self, x):
+    mean, logvar = tf.split(self.encoder(x), num_or_size_splits=2, axis=1)
+    return mean, logvar
+
+  def reparameterize(self, mean, logvar):
+    eps = tf.random.normal(shape=mean.shape)
+    return eps * tf.exp(logvar * .5) + mean
+
+  def decode(self, z, apply_sigmoid=False):
+    logits = self.decoder(z)
+    if apply_sigmoid:
+      probs = tf.sigmoid(logits)
+      return probs
+    return logits
