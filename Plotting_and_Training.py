@@ -25,6 +25,20 @@ def generate_and_save_images(model, epoch, test_sample):
 
   
   def generate_samples(model, sample, n):
+    """
+        Generates samples using the model.
+
+        Args:
+        model (CVAE): The neural network model.
+        sample (ndarray): Data sample.
+        n (int): Number of samples to generate.
+
+        Returns:
+        ndarray: Generated samples (predictions).
+        ndarray: Corresponding latent vectors for the generated samples.
+    """  
+    
+    
     result_x = []
     result_y = []
     mean, logvar = model.encode(sample[:,:input_dim,:])
