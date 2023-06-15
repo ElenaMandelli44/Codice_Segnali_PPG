@@ -2,6 +2,14 @@ import matplotlib.pyplot as plt
 
 
 def generate_and_save_images(model, epoch, test_sample):
+  """
+    Generates and saves images using the model during training.
+
+    Args:
+    model (CVAE): The neural network model.
+    epoch (int): Current epoch number.
+    test_sample (ndarray): Test data sample.
+  """
   mean, logvar = model.encode(test_sample[:,:input_dim,:])
   #print(mean)
   #print(test_sample[:,input_dim:,0])
