@@ -96,7 +96,7 @@ for conv_settings, linear_settings in product(conv_architectures, linear_archite
 
 
     #generate_and_save_images(model, 0, test_sample)
-    max_patience = 3
+    max_patience = 10
     patience = 0 # early stopping
     best_loss = float('inf')
 
