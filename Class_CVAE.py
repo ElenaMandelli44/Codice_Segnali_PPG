@@ -20,53 +20,64 @@ class CVAE(Model):
     
     """"
    
-    def __init__(self, latent_dim):
-        super(CVAE, self).__init__()
-        self.latent_dim = latent_dim
+    def __init__(self, latent_dim, conv_layers_settings, linear_layers_settings):
+            super(CVAE, self).__init__()
+            self.latent_dim = latent_dim
+            conv_layers = []
+            for conv_settings in conv_layers_settings:
+
+
+            conv_layers.append(tf.keras.layers.Conv1D(**conv_settings))
+
+            linear_layers = []
+            for linear_settings in linear_layers_settings:
+                linear_layers.append(tf.keras.layers.Dense(**linear_settings))
+
+
         self.encoder = tf.keras.Sequential(
            [
             tf.keras.layers.InputLayer(input_shape=(input_dim, 1)),
-            tf.keras.layers.Conv1D(
-                filters=128, kernel_size=3, strides=2, padding='valid', activation='relu'),
-            tf.keras.layers.Conv1D(
-                filters=64, kernel_size=3, strides=2, padding='valid', activation='relu'),
-            tf.keras.layers.Conv1D(
-                filters=32, kernel_size=3, strides=2, padding='valid', activation='relu'),
+            *conv_layers,
             tf.keras.layers.Flatten()
-            # No activation
-            tf.keras.layers.Dense(256, activation='relu'),
-            tf.keras.layers.Dense(128, activation='relu'),
+            *linear_layers,
             tf.keras.layers.Dense(latent_dim + latent_dim),
             ]
          )
+                    
            
- # The decoder network takes a sample from the latent distribution, applies a series of transposed convolutional layers 
-  # followed by dense layers, and outputs a reconstructed input tensor.          
-           
-           
+       encoder_conv_layers_output_shape = self.encoder.layers[len(conv_layers)-1].output_shape[1:]
+
+        """      
+        The decoder network takes a sample from the latent distribution, applies a series of transposed 
+        convolutional layers followed by dense layers, and outputs a reconstructed input tensor. 
+        """
+        
+        conv_layers = []
+        for conv_settings in conv_layers_settings[::-1][1:]:
+        conv_layers.append(tf.keras.layers.Conv1DTranspose(**conv_settings))
+        
+        linear_layers = []
+        for linear_settings in linear_layers_settings[::-1]:
+        linear_layers.append(tf.keras.layers.Dense(**linear_settings))
+       
+
+      self.decoder = tf.keras.Sequential( 
+            
+            
+            
          self.decoder = tf.keras.Sequential(
           [
-              tf.keras.layers.InputLayer(input_shape=(latent_dim,)),
-              tf.keras.layers.Dense(128, activation='relu'),
-              tf.keras.layers.Dense(256, activation='relu'),
-              tf.keras.layers.Dense(units=127*32, activation='relu'),
-              tf.keras.layers.Reshape(target_shape=(127, 32)),
-              tf.keras.layers.Conv1DTranspose(
-                  filters=32, kernel_size=3, strides=2, padding='valid',
-                  activation='relu'),
-              tf.keras.layers.Conv1DTranspose(
-                  filters=64, kernel_size=3, strides=2, padding='valid',
-                  activation='relu'),
-              # No activation
-              tf.keras.layers.Conv1DTranspose(
-                  filters=1, kernel_size=3, strides=2, padding='valid'),
-               
-              
-              # tf.keras.layers.Reshape(target_shape=(batch_size, -1, 1)),
-              tf.keras.layers.Lambda(lambda x: tf.expand_dims(x, axis=-1)),
+            tf.keras.layers.InputLayer(input_shape=(latent_dim,)),
+            *linear_layers,
+
+            tf.keras.layers.Dense(units=encoder_conv_layers_output_shape[0]*encoder_conv_layers_output_shape[1]),
+            tf.keras.layers.Reshape(target_shape=encoder_conv_layers_output_shape),
+            *conv_layers,
+            tf.keras.layers.Conv1DTranspose(filters=1, kernel_size=3, strides=2, padding='valid'),
+            tf.keras.layers.Lambda(lambda x: tf.expand_dims(x, axis=-1)),
          
-              tf.keras.layers.Resizing(input_dim, 1),
-              tf.keras.layers.Reshape(target_shape=(input_dim, 1)),
+            tf.keras.layers.Resizing(input_dim, 1),
+            tf.keras.layers.Reshape(target_shape=(input_dim, 1)),
           ]
       )              
 
@@ -136,3 +147,63 @@ class CVAE(Model):
       probs = tf.sigmoid(logits)
       return probs
     return logits
+
+          
+          
+    
+    conv_architectures = [
+    
+        [{'filters': 32, 'kernel_size':3, 'strides': 2, 'activation':'relu', 'padding':'valid'},
+         {'filters': 64, 'kernel_size':3, 'strides': 2, 'activation':'relu', 'padding':'valid'},
+         {'filters': 128, 'kernel_size':3, 'strides': 2, 'activation':'relu', 'padding':'valid'}     
+        ],   
+    
+        [{'filters': 32, 'kernel_size':3, 'strides': 2, 'activation':'tanh', 'padding':'valid'},
+         {'filters': 64, 'kernel_size':3, 'strides': 2, 'activation':'tanh', 'padding':'valid'},
+         {'filters': 128, 'kernel_size':3, 'strides': 2, 'activation':'tanh', 'padding':'valid'}     
+         ], 
+    
+        [{'filters': 64, 'kernel_size':3, 'strides': 2, 'activation':'tanh', 'padding':'valid'},
+         {'filters': 128, 'kernel_size':3, 'strides': 2, 'activation':'tanh', 'padding':'valid'},
+         {'filters': 256, 'kernel_size':3, 'strides': 2, 'activation':'tanh', 'padding':'valid'}
+         ], 
+    
+
+    
+       [{'filters': 64, 'kernel_size':3, 'strides': 2, 'activation':'relu', 'padding':'valid'},
+        {'filters': 128, 'kernel_size':3, 'strides': 2, 'activation':'relu', 'padding':'valid'},
+        {'filters': 256, 'kernel_size':3, 'strides': 2, 'activation':'relu', 'padding':'valid'}     
+        ],   
+    
+      [{'filters': 64, 'kernel_size':3, 'strides': 2, 'activation':'tanh', 'padding':'valid'},
+       {'filters': 128, 'kernel_size':3, 'strides': 2, 'activation':'tanh', 'padding':'valid'},
+        ], 
+
+      [{'filters': 64, 'kernel_size':3, 'strides': 2, 'activation':'sigmoid', 'padding':'valid'},
+       {'filters': 128, 'kernel_size':3, 'strides': 2, 'activation':'sigmoid', 'padding':'valid'},
+       {'filters': 256, 'kernel_size':3, 'strides': 2, 'activation':'sigmoid', 'padding':'valid'}
+        ], 
+        
+      [{'filters': 64, 'kernel_size':3, 'strides': 2, 'activation':'elu', 'padding':'valid'},
+       {'filters': 128, 'kernel_size':3, 'strides': 2, 'activation':'elu', 'padding':'valid'},
+       {'filters': 256, 'kernel_size':3, 'strides': 2, 'activation':'elu', 'padding':'valid'}  
+        ],   
+    ]
+
+    linear_architectures = [
+      [{'units':256, 'activation':'relu'},
+       {'units':128, 'activation':'relu'},
+        ],
+    
+
+    
+      [{'units':256, 'activation':'relu'},
+       {'units':128, 'activation':'relu'},
+       {'units':64, 'activation':'relu'},
+       ],
+    
+      [{'units':128, 'activation':'relu'},
+       {'units':64, 'activation':'relu'},
+       ],
+ 
+     ]
