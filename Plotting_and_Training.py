@@ -64,10 +64,12 @@ def generate_and_save_images(model, epoch, test_sample):
   
   # PLOTTING
 
- 
+ # epochs 
+epochs = 100
+
 
 # set the dimensionality of the latent space to a plane for visualization later
-num_examples_to_generate = 4
+num_examples_to_generate = 6
 
  
 
