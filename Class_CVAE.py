@@ -11,13 +11,20 @@ from tensorflow.keras import backend as K
 
 class CVAE(Model):
     
-    #Define a Convolutional Variational Autoencoder (CVAE) model using TensorFlow Keras. The model consists of an encoder and decoder network.
+    """"
+        The encoder network takes an input tensor, applies a series of convolutional layers followed by dense layers,
+        and outputs the mean and log variance of the latent distribution.
+
+        The decoder network takes a sample from the latent distribution, applies a series of transposed convolutional layers
+        followed by dense layers, and outputs a reconstructed input tensor.
     
+    """"
+   
     def __init__(self, latent_dim):
         super(CVAE, self).__init__()
         self.latent_dim = latent_dim
         self.encoder = tf.keras.Sequential(
-                [
+           [
             tf.keras.layers.InputLayer(input_shape=(input_dim, 1)),
             tf.keras.layers.Conv1D(
                 filters=8, kernel_size=2, strides=2, padding='valid', activation='relu'),
@@ -58,14 +65,6 @@ class CVAE(Model):
           ]
       )              
 
-    def build_decoder(self):
-        latent_inputs = Input(shape=(self.latent_dim,))
-        x = Dense(7*7*64, activation='relu')(latent_inputs)
-        x = Reshape((7, 7, 64))(x)
-        x = Conv2DTranspose(64, 3, activation='relu', strides=2, padding='same')(x)
-        x = Conv2DTranspose(32, 3, activation='relu', strides=2, padding='same')(x)
-        outputs = Conv2DTranspose(1, 3, activation='sigmoid', padding='same')(x)
-        return Model(latent_inputs, outputs, name='decoder')
 
     def sample(self, z_mean, z_log_var):
         epsilon = K.random_normal(shape=(K.shape(z_mean)[0], self.latent_dim))
