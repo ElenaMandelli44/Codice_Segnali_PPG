@@ -7,8 +7,17 @@ def compute_loss(model, x):
     y = x[:, input_dim:, 0]
     x = x_x
     mse = tf.keras.losses.MeanSquaredError(reduction=tf.keras.losses.Reduction.NONE)
-    x_logit = model(x)  # Assuming the model directly outputs the reconstructed input tensor
+    mean, logvar = model.encode(x)
+    z = model.reparameterize(mean, logvar)
+    x_logit = model.decode(z)
+
+    cross_ent = mse(x_logit, x)
+    logpx_z = -tf.reduce_sum(cross_ent, axis=[1])
+    logpz = log_normal_pdf(z, 0., 0.)
+    logqz_x = log_normal_pdf(z, mean, logvar)
+    kl_divergence = tf.reduce_mean(logqz_x - logpz)
     
-    mse_loss = mse(x_logit, x)
-    mse_loss = tf.reduce_mean(mse_loss)
+    mse_loss = tf.reduce_mean(cross_ent)
+    kl_weight = 0.01  # Weight to balance the importance of KL divergence
+    total_loss = mse_loss + kl_weight * kl_divergence
     return mse_loss
