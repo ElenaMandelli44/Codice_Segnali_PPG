@@ -29,8 +29,10 @@ def generate_and_save_images(model, epoch, test_sample):
   for i in range(predictions.shape[0]):
     ax[i,0].plot(test_sample[i, :input_dim, 0])
     ax[i,1].plot(predictions[i, :, 0])
-
-  plt.show()
+    
+    
+    plt.savefig(f"epoch_{epoch}_images.png")  # Salva il grafico per l'epoch corrente
+    plt.close()  # Chiude la figura per evitare sovrapposizioni di grafici
 
   
   def generate_samples(model, sample, n):
