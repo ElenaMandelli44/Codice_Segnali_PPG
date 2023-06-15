@@ -13,6 +13,8 @@ def log_normal_pdf(sample, mean, logvar, raxis=1):
 
     Returns:
         tf.Tensor: Log probability density function.
+        
+       
     """
     log2pi = tf.math.log(2. * np.pi)
     return tf.reduce_sum(
@@ -30,6 +32,13 @@ def compute_loss(model, x):
 
         Returns:
             tf.Tensor: Loss value.
+            
+            
+         It calculates the mean squared error (MSE) between the reconstructed input (x_logit) and the original input (x). 
+         It also computes the negative log-likelihood of the reconstruction error (logpx_z), 
+         the Kullback-Leibler (KL) divergence between the prior and posterior distributions over the latent space (logpz and logqz_x), 
+         and the MSE term for an additional output of the encoder (y_loss). The final loss value is the sum of these terms.
+         
     """
     
     
