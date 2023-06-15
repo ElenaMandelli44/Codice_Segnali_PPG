@@ -4,15 +4,16 @@ from sklearn.impute import SimpleImputer
 from sklearn.covariance import EllipticEnvelope
 
 """
-Preprocesses the data by performing normalization, data cleaning, and removal of any outliers using specific techniques to prepare the data for training the CVAE model.
+    Preprocesses the data by performing normalization, data cleaning,
+    and removal of any outliers using specific techniques to prepare the data for training the CVAE model.
 
-Parameters:
-- X: numerical array-like; the features/data to be preprocessed.
-- y: numerical array-like; the corresponding labels/targets.
+    Parameters:
+    - X: numerical array-like; the features/data to be preprocessed.
+    - y: numerical array-like; the corresponding labels/targets.
 
-Returns:
-- X_processed: numerical array-like; the preprocessed features.
-- y_processed: numerical array-like; the preprocessed labels.
+    Returns:
+    - X_processed: numerical array-like; the preprocessed features.
+    - y_processed: numerical array-like; the preprocessed labels.
 
 """
 
