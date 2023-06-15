@@ -43,6 +43,10 @@ y_val = validation_labels[::100]
 
 
 # Expand dimention labels
+
+""" Expanding the dimensions is mandatory to be able to combine the labels 
+        with the features during the training phase """
+
 y_train = np.expand_dims(y_train, axis=-1)
 y_test = np.expand_dims(y_test, axis=-1)
 y_val = np.expand_dims(y_val, axis=-1)
@@ -57,6 +61,9 @@ latent_dim = y_train.shape[1]
 
 
 # Convert to tensor
+
+""" The conversion of signals into tensors is necessary to be able to use the data within TensorFlow """
+
 x_test = tf.convert_to_tensor(x_test, dtype=tf.float32)
 y_test = tf.convert_to_tensor(y_test, dtype=tf.float32)
 x_train = tf.convert_to_tensor(x_train, dtype=tf.float32)
@@ -74,6 +81,10 @@ test_size = x_test.shape[0]
 val_size = x_val.shape[0]
 
 # Data Set
+
+""" The from_tensor_slices() method takes in an input tensor (xy_train, xy_val, or xy_test) 
+    and creates a dataset where each element of the tensor becomes an element of the dataset """
+
 train_dataset = (tf.data.Dataset.from_tensor_slices(xy_train)
                  .shuffle(train_size).batch(batch_size))
 val_dataset = (tf.data.Dataset.from_tensor_slices(xy_val).batch(batch_size))
