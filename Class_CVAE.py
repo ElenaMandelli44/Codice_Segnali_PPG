@@ -70,10 +70,7 @@ class CVAE(Model):
         for linear_settings in linear_layers_settings[::-1]:
         linear_layers.append(tf.keras.layers.Dense(**linear_settings))
        
-
-      self.decoder = tf.keras.Sequential( 
-            
-            
+                
             
          self.decoder = tf.keras.Sequential(
           [
