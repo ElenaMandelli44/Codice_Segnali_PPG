@@ -1,4 +1,10 @@
 import matplotlib.pyplot as plt
+import numpy as np
+import tensorflow as tf
+import time
+from IPython import display
+from itertools import product
+
 
 
 def generate_and_save_images(model, epoch, test_sample):
