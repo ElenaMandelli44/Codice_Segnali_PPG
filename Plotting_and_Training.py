@@ -15,10 +15,13 @@ def generate_and_save_images(model, epoch, test_sample):
     model (CVAE): The neural network model.
     epoch (int): Current epoch number.
     test_sample (ndarray): Test data sample.
+    
+    This function takes as input a model, a test sample and the current epoch. Using the model, 
+    the function codes the test sample to obtain the means and logarithms of the variances of the posterior distributions. 
+    Next, sample points from the latent space and generate predictions using these points. 
+    Finally, view the input data and forecast graphs.
   """
   mean, logvar = model.encode(test_sample[:,:input_dim,:])
-  #print(mean)
-  #print(test_sample[:,input_dim:,0])
   z = model.reparameterize(mean, logvar)
   predictions = model.sample(z)
   fig, ax = plt.subplots(test_sample.shape[0], 2, figsize=(12, 8))
