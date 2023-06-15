@@ -76,15 +76,12 @@ for conv_settings, linear_settings in product(conv_architectures, linear_archite
     print(linear_settings)
     optimizer = tf.keras.optimizers.Adam(1e-4)
 
-
-    # keeping the random vector constant for generation (prediction) so
-    # it will be easier to see the improvement.
-
-
+    
+    # Generate new random images with the updated model
+    random_indices = random.sample(range(num_examples_to_generate), num_examples_to_generate)
+    random_sample = tf.gather(test_sample, random_indices)
+    
     model = CVAE(latent_dim, conv_architectures[0], linear_architectures[0])
-
-
- 
 
   
     # Pick a sample of the test set for generating output images
