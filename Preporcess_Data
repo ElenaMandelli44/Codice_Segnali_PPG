@@ -1,1 +1,26 @@
+import numpy as np
+from sklearn.preprocessing import StandardScaler
+from sklearn.impute import SimpleImputer
+from sklearn.covariance import EllipticEnvelope
 
+#Create a data preprocessing pipeline that includes normalization, data cleaning,
+# removal of any outliers, and any other necessary operations to prepare the data 
+#for training the CVAE network.
+
+def preprocess_data(X, y):
+    # Normalization
+    scaler = StandardScaler()
+    X = scaler.fit_transform(X)
+    
+    # Data cleaning
+    imputer = SimpleImputer(strategy='median')
+    X = imputer.fit_transform(X)
+    
+    # Removal of any outliers
+    outlier_detector = EllipticEnvelope(contamination=0.1)
+    outlier_detector.fit(X)
+    outlier_mask = outlier_detector.predict(X) != -1
+    X = X[outlier_mask]
+    y = y[outlier_mask]
+
+    return X, y
