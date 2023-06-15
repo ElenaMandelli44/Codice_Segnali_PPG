@@ -71,6 +71,18 @@ class CVAE(Model):
         linear_layers.append(tf.keras.layers.Dense(**linear_settings))
        
                 
+        """   
+            A sequential model is constructed, starting with an input layer (tf.keras.layers.InputLayer) that specifies the input shape. 
+            The elements of the linear_layers list are added to the model.
+            A dense layer is added with the dimension of the final layer in the encoder.
+            A Reshape layer is added to reshape the output to match the computed value in the encoder's output.
+            Then, the elements of the conv_layers list are added to the model.
+            A conv_layer with a single filter is subsequently added.
+            A Lambda layer is included to expand the dimensions of the output by adding an axis to the last dimension.
+            A Reshape layer is added to reshape the output to match the input_dim value.
+            Another Reshape layer is included to reshape the output to match the dimensions (input_dim, 1).
+
+        """        
             
          self.decoder = tf.keras.Sequential(
           [
