@@ -27,14 +27,15 @@ class CVAE(Model):
            [
             tf.keras.layers.InputLayer(input_shape=(input_dim, 1)),
             tf.keras.layers.Conv1D(
-                filters=8, kernel_size=2, strides=2, padding='valid', activation='relu'),
+                filters=128, kernel_size=3, strides=2, padding='valid', activation='relu'),
             tf.keras.layers.Conv1D(
-                filters=16, kernel_size=2, strides=2, padding='valid', activation='relu'),
+                filters=64, kernel_size=3, strides=2, padding='valid', activation='relu'),
             tf.keras.layers.Conv1D(
-            
+                filters=32, kernel_size=3, strides=2, padding='valid', activation='relu'),
+            tf.keras.layers.Flatten()
             # No activation
-            tf.keras.layers.Dense(16, activation='relu'),
-            tf.keras.layers.Dense(8, activation='relu'),
+            tf.keras.layers.Dense(256, activation='relu'),
+            tf.keras.layers.Dense(128, activation='relu'),
             tf.keras.layers.Dense(latent_dim + latent_dim),
             ]
          )
@@ -46,17 +47,21 @@ class CVAE(Model):
          self.decoder = tf.keras.Sequential(
           [
               tf.keras.layers.InputLayer(input_shape=(latent_dim,)),
-              tf.keras.layers.Dense(16, activation='relu'),
-              tf.keras.layers.Dense(8, activation='relu'),
-              tf.keras.layers.Dense(units=12*32, activation='relu'),
-              tf.keras.layers.Reshape(target_shape=(12, 32)),
+              tf.keras.layers.Dense(128, activation='relu'),
+              tf.keras.layers.Dense(256, activation='relu'),
+              tf.keras.layers.Dense(units=127*32, activation='relu'),
+              tf.keras.layers.Reshape(target_shape=(127, 32)),
               tf.keras.layers.Conv1DTranspose(
-                  filters=8, kernel_size=3, strides=2, padding='valid',
+                  filters=32, kernel_size=3, strides=2, padding='valid',
                   activation='relu'),
               tf.keras.layers.Conv1DTranspose(
-                  filters=16, kernel_size=3, strides=2, padding='valid',
+                  filters=64, kernel_size=3, strides=2, padding='valid',
                   activation='relu'),
-          
+              # No activation
+              tf.keras.layers.Conv1DTranspose(
+                  filters=1, kernel_size=3, strides=2, padding='valid'),
+               
+              
               # tf.keras.layers.Reshape(target_shape=(batch_size, -1, 1)),
               tf.keras.layers.Lambda(lambda x: tf.expand_dims(x, axis=-1)),
          
