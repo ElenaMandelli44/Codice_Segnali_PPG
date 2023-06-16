@@ -93,13 +93,18 @@ class CVAE(Model):
             linear_layers (list): A list of dense layers in the decoder network. 
         """
         
-        conv_layers = []
-        for conv_settings in conv_layers_settings[::-1][1:]:
-        conv_layers.append(tf.keras.layers.Conv1DTranspose(**conv_settings))
+
+        conv_settings = conv_architectures[0]  
+        conv_layers.append(tf.keras.layers.Conv1D(**conv_settings[2]))
+        conv_layers.append(tf.keras.layers.Conv1D(**conv_settings[1]))
+        conv_layers.append(tf.keras.layers.Conv1D(**conv_settings[0]))
+
         
         linear_layers = []
-        for linear_settings in linear_layers_settings[::-1]:
-        linear_layers.append(tf.keras.layers.Dense(**linear_settings))
+        
+        linear_settings = linear_architectures [0]
+        linear_layers.append(tf.keras.layers.Dense(**linear_settings[1]))
+        linear_layers.append(tf.keras.layers.Dense(**linear_settings[0]))
        
                 
         """   
