@@ -27,9 +27,9 @@ def generate_samples_from_age(model, train_labels, age, n):
    result_x = []
    result_y = []
    for i in range(n):
-         idx = random.randint(0, len(train_labels)-1)
+         idx = random.randint(0, len(train_labels)-1) #This index is used to randomly select a training label from the train_labels DataFrame.
          z = train_labels.iloc[idx, :].copy()
-         z['age'] = age
+         z['age'] = age # Update the age value in the z label with the value provided as input age.
          z = tf.convert_to_tensor(z.to_numpy().reshape(1,-1), dtype=tf.float32)
 
          predictions = model.sample(z)
