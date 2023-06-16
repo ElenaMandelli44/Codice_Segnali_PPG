@@ -150,9 +150,14 @@ def generate_and_save_images(model, epoch, test_sample,input_dim)):
 
             for epoch in range(1, epochs + 1):
                 start_time = time.time()
+                train_losses = []                                
                 for train_x in train_dataset:
-                    train_step(model, train_x, optimizer)
-                end_time = time.time()
+                    train_loss = train_step(model, train_x, optimizer, input_dim)
+                    train_losses.append(train_loss)
+                train_losses = np.array(train_losses).mean()
+                end_time = time.time()   
+
+                                            
 
                 loss = tf.keras.metrics.Mean()
                 for val_x in val_dataset:
