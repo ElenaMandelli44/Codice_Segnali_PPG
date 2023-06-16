@@ -9,13 +9,12 @@ from tqdm import tqdm
 
 
 def compute_metrics(y_true, y_pred):
-    # Coefficient of Determination (R²)
-    r2 = r2_score(y_true, y_pred)
-    # print("Coefficient of Determination (R²):", r2)
+
+
 
     # Mean Squared Error (MSE)
     mse = mean_squared_error(y_true, y_pred)
-    return r2, mse
+    return  mse
 
 
 def analyze():
@@ -29,8 +28,8 @@ def analyze():
     4. Retrieves the predicted signals and labels from a pickle file.
     5. Normalizes the predicted signals.
     6. Determines the unique ages present in the predicted data that also exist in the test data.
-    7. Computes metrics (R2 and MSE) for each age, comparing the test and generated signals.
-    8. Plots the computed metrics (R2 and MSE) against the ages.
+    7. Computes metrics ( and MSE) for each age, comparing the test and generated signals.
+    8. Plots the computed metrics ( and MSE) against the ages.
 
     """
 
@@ -67,8 +66,8 @@ def analyze():
             test_age_signal = test[test_age_idx]
             for gen_age_idx in gen_age_indices:
                 gen_age_signal = gen[gen_age_idx]
-                r2, mse = compute_metrics(test_age_signal, gen_age_signal)
-                all_metrics.append([r2, mse])
+                , mse = compute_metrics(test_age_signal, gen_age_signal)
+                all_metrics.append([, mse])
 
         all_metrics_array = np.asarray(all_metrics).mean(axis=0)
         if np.isnan(all_metrics_array).any():
@@ -78,9 +77,9 @@ def analyze():
     metrics_per_age = np.asarray(metrics_per_age)
 
     _, ax = plt.subplots(2, 1, figsize=(10, 5))
-    ax[0].plot(unique_ages, metrics_per_age[:, 0], "o", label="R2")
+    ax[0].plot(unique_ages, metrics_per_age[:, 0], "o", label="")
     ax[0].set_xlabel("Age")
-    ax[0].set_ylabel("R2")
+    ax[0].set_ylabel("")
     ax[0].legend()
     ax[1].plot(unique_ages, metrics_per_age[:, 1], "o", label="MSE")
     ax[1].set_xlabel("Age")
