@@ -189,7 +189,7 @@ class CVAE(Model):
             eps = tf.random.normal(shape=(100, self.latent_dim))
          return self.decode(eps, labels, apply_sigmoid=True)
 
-  def decode(self, z, apply_sigmoid=False):
+   def decode(self, z, labels, apply_sigmoid=False):
     
        """
         Decode the latent vector and reconstruct the input data.
