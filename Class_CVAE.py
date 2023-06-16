@@ -231,7 +231,91 @@ class CVAE(Model):
             return x_logit, z, mean, logvar
             def sample(self, eps=None, labels=None):
 
-       
+        def sample(self, eps=None, labels=None, num_samples=1):
+            
+            """Generates samples from the CVAE model.
+
+            Generates samples by decoding random or specified latent variables and labels.
+
+            Args:
+                eps (tf.Tensor, optional): Latent variables. If not provided, random samples will be generated.
+                labels (tf.Tensor, optional): Labels. If not provided, random samples will be generated.
+                num_samples (int, optional): Number of samples to generate. Defaults to 1.
+
+            Returns:
+                tf.Tensor: Decoded samples.
+            """
+            
+            num_samples = (
+                eps.shape[0]
+                if eps is not None
+                else (labels.shape[0] if labels is not None else num_samples)
+            )
+            eps = (
+                eps
+                if not eps is None
+                else tf.random.normal(shape=(num_samples, self.latent_dim))
+            )
+            labels = (
+                labels
+                if not labels is None
+                else tf.random.normal(shape=(num_samples, self.label_dim))
+            )
+            return self.decode(eps, labels, apply_sigmoid=True)
+
+
+        def encode(self, x):
+            
+            """Encodes the input x and returns the mean and log variance of the latent space.
+
+            Args:
+                x (tf.Tensor): Input tensor.
+
+            Returns:
+                tf.Tensor: Mean of the latent space.
+                tf.Tensor: Log variance of the latent space.
+            """
+            
+            x = self.encoder(x)
+            x = x[:, 2 * (x.shape[1] // 2)]
+            mean, logvar = tf.split(x, num_or_size_splits=2, axis=1)
+            return mean, logvar
+
+
+        def reparameterize(self, mean, logvar):
+            
+            """Reparameterizes the latent variables using the mean and log variance.
+
+            Args:
+                mean (tf.Tensor): Mean of the latent space.
+                logvar (tf.Tensor): Log variance of the latent space.
+
+            Returns:
+                tf.Tensor: Reparameterized latent variables.
+            """
+            
+            eps = tf.random.normal(shape=tf.shape(mean))
+            return eps * tf.exp(logvar * 0.5) + mean
+
+
+        def decode(self, z, labels, apply_sigmoid=False):
+            
+            """Decodes the latent variables z and labels into reconstructed outputs.
+
+            Args:
+                z (tf.Tensor): Latent variables.
+                labels (tf.Tensor): Labels.
+                apply_sigmoid (bool, optional): Whether to apply sigmoid activation to the output. Defaults to False.
+
+            Returns:
+                tf.Tensor: Reconstructed outputs.
+            """
+            
+            inputs = tf.concat([z, labels], axis=1)
+            x = self.decoder(inputs)
+            if apply_sigmoid:
+                x = tf.sigmoid(x)
+            return x       
 
 
 
