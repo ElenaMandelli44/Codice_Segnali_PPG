@@ -125,10 +125,12 @@ def generate_and_save_images(model, epoch, test_sample,input_dim)):
 
     num_examples_to_generate = 6
 
-    if not os.path.exists("trained_model"):
-        for conv_settings, linear_settings in product(
+    if not os.path.exists("trained_model.index"):
+         writer = tf.summary.create_file_writer(train_log_di
+         for conv_settings, linear_settings in product(
             conv_architectures, linear_architectures
-        ):
+         ):
+                                                
             print("---------")
             print(conv_settings)
             print(linear_settings)
