@@ -157,13 +157,13 @@ def generate_and_save_images(model, epoch, test_sample,input_dim)):
                 train_losses = np.array(train_losses).mean()
                 end_time = time.time()   
 
-                                            
+                val_losses = []                            
+                val_losses.append(compute_loss(model, val_x, input_dim))
+                val_losses = np.array(val_losses).mean()
 
-                loss = tf.keras.metrics.Mean()
-                for val_x in val_dataset:
-                    loss(compute_loss(model, val_x, input_dim))
-                loss_result = loss.result()
-
+                                                
+                                                
+                                                
                 if loss_result < best_loss:
                     best_loss = loss_result
                     patience = 0
