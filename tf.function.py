@@ -25,7 +25,7 @@ def train_step(model, x, optimizer, input_dim):
    optimizer.apply_gradients(zip(gradients, model.trainable_variables)) #Update weights model
    return loss
 
-def generate_and_save_images(model, epoch, test_sample):
+def generate_and_save_images(model, epoch, test_sample,input_dim)):
   """
     Generates and saves images using the model during training.
 
@@ -33,6 +33,10 @@ def generate_and_save_images(model, epoch, test_sample):
     model (CVAE): The neural network model.
     epoch (int): Current epoch number.
     test_sample (ndarray): Test data sample.
+    input_dim (int): Input dimensionality.
+    
+    Returns:
+            None
     
     This function takes as input a model, a test sample and the current epoch. Using the model, 
     the function codes the test sample to obtain the means and logarithms of the variances of the posterior distributions. 
@@ -41,18 +45,17 @@ def generate_and_save_images(model, epoch, test_sample):
   """
   mean, logvar = model.encode(test_sample[:,:input_dim,:])
   z = model.reparameterize(mean, logvar)
+  labels = test_sample[:, input_dim:, 0]
   predictions = model.sample(z)
-  fig, ax = plt.subplots(test_sample.shape[0], 2, figsize=(12, 8))
-
-  for i in range(predictions.shape[0]):
-    ax[i,0].plot(test_sample[i, :input_dim, 0])
-    ax[i,1].plot(predictions[i, :, 0])
-    
-    
-    plt.savefig(f"epoch_{epoch}_images.png")  # Salva il grafico per l'epoch corrente
-    plt.close()  # Chiude la figura per evitare sovrapposizioni di grafici
-
   
+  fig, ax = plt.subplots(test_sample.shape[0], 2, figsize=(12, 8))
+  for i in range(predictions.shape[0]):
+      ax[i,0].plot(test_sample[i, :input_dim, 0])
+      ax[i,1].plot(predictions[i, :, 0])
+      
+    plt.show()
+       
+      
   def generate_samples(model, sample, n):
     """
         Generates samples using the model.
