@@ -117,11 +117,12 @@ def generate_and_save_images(model, epoch, test_sample,input_dim)):
     epochs=1,
     num_examples_to_generate=6,
      ):  
-      
-     model = CVAE(
+    
+    train_log_dir = "logs/"
+    model = CVAE(
            latent_dim, label_dim, conv_architectures, linear_architectures, input_dim
          )
-    epochs = 100
+
     num_examples_to_generate = 6
 
     if not os.path.exists("trained_model"):
