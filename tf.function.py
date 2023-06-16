@@ -84,6 +84,22 @@ def generate_and_save_images(model, epoch, test_sample,input_dim)):
     return np.concatenate(result_x), np.concatenate(result_y)
   
   
+    def train_or_load_model(
+    *,
+    latent_dim,
+    train_dataset,
+    test_dataset,
+    val_dataset,
+    label_dim,
+    conv_architectures,
+    linear_architectures,
+    batch_size,
+    input_dim,
+    epochs=1,
+    num_examples_to_generate=6,
+     ):  
+      
+      
   # PLOTTING
 
    # epochs 
