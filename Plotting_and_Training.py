@@ -71,7 +71,19 @@ epochs = 100
 # set the dimensionality of the latent space to a plane for visualization later
 num_examples_to_generate = 6
 
- 
+"""
+Iterates over the product of convolutional and linear settings and performs the following operations for each combination:
+    - Prints a separator line to indicate the current combination.
+    - Prints the convolutional settings.
+    - Prints the linear settings.
+
+Parameters:
+    conv_architectures (list): A list of convolutional settings.
+    linear_architectures (list): A list of linear settings.
+
+Returns:
+    None
+""" 
 
 
 for conv_settings, linear_settings in product(conv_architectures, linear_architectures):
