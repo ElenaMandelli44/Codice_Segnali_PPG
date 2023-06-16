@@ -6,6 +6,25 @@ import pickle
 import pandas as pd
 
 def get_data (batch_size): 
+    
+    """
+    This script is designed to load and preprocess data for a PPG (Photoplethysmography) project. 
+    It provides a function called get_data that returns the necessary data and parameters for training a model.
+    
+    Parameters:
+    - batch_size: The desired batch size for training the model.
+
+    Returns:
+    - train_dataset: TensorFlow dataset containing the training data.
+    - val_dataset: TensorFlow dataset containing the validation data.
+    - test_dataset: TensorFlow dataset containing the test data.
+    - input_dim: Dimension of the input signals.
+    - latent_dim: Dimension of the target labels.
+    - label_dim: Dimension of the target labels.
+    - input_dim: Dimension of the input signals.
+    """
+
+
     # Definition of working directory
     working_dir = "/Users/elenamandelli/Desktop/PPG_Project/"
 
