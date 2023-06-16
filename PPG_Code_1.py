@@ -295,6 +295,7 @@ class CVAE(tf.keras.Model):
               A dense layer is added with the dimension of the final layer in the encoder.
               A Reshape layer is added to reshape the output to match the computed value in the encoder's output.
               Then, the elements of the conv_layers list are added to the model.
+              Conv1D layer is then added with just one fileter
               A Flatten layer is added to flatten the output from the convolutional layers into a 1D vector.
               A Dense layer is added with 1024 units.
 
@@ -305,7 +306,6 @@ class CVAE(tf.keras.Model):
                         input_shape=(self.latent_dim + self.label_dim)
                     ),  # Aggiungiamo 1 per l'input della label
                     *linear_layers,
-                    # inserts unsqueeze
                     tf.keras.layers.Reshape((256, 1)),
                     *conv_layers,
                     tf.keras.layers.Conv1DTranspose(filters=1, kernel_size=1, strides=1),
