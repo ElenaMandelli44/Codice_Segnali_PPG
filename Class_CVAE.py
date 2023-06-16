@@ -192,14 +192,16 @@ class CVAE(Model):
    def decode(self, z, labels, apply_sigmoid=False):
     
        """
-        Decode the latent vector and reconstruct the input data.
+      
+        Decodes a sample from the latent distribution and reconstructs the original input.
 
         Args:
-            z (tf.Tensor): Latent vector.
-            apply_sigmoid (bool): Whether to apply sigmoid activation to the output.
-
+             z (tf.Tensor): The sample from the latent distribution.
+             labels (tf.Tensor): The labels used to condition the decoder network.
+             apply_sigmoid (bool, optional): Whether to apply the sigmoid activation function to the output logits.
+                                                 Defaults to False.
         Returns:
-            tf.Tensor: Reconstructed input data.
+            tf.Tensor: Reconstructed input tensor.
         """        
                
     logits = self.decoder(z)
