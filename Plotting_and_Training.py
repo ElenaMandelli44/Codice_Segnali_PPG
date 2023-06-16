@@ -78,6 +78,7 @@ for conv_settings, linear_settings in product(conv_architectures, linear_archite
     print('---------')
     print(conv_settings)
     print(linear_settings)
+    #The Adam optimizer is initialized with a learning rate of 1e-4. ( best value )
     optimizer = tf.keras.optimizers.Adam(1e-4)
 
     
