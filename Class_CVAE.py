@@ -173,6 +173,7 @@ class CVAE(Model):
          return self.decode(eps, labels, apply_sigmoid=True)
 
   def decode(self, z, apply_sigmoid=False):
+    
        """
         Decode the latent vector and reconstruct the input data.
 
