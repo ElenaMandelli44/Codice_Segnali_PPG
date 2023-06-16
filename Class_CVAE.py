@@ -156,7 +156,24 @@ class CVAE(Model):
     mean, logvar = tf.split(self.encoder(x), num_or_size_splits=2, axis=1)
     return mean, logvar
 
-  def reparameterize(self, mean, logvar):
+
+  def encode(self, x):
+    """
+    Encodes an input tensor and computes the mean and log variance of the latent distribution.
+
+    Args:
+        x (tf.Tensor): The input tensor to encode.
+
+    Returns:
+        tf.Tensor: The mean of the latent distribution.
+        tf.Tensor: The log variance of the latent distribution.
+
+    """
+    x = self.encoder(x)
+    mean, logvar = tf.split(x, num_or_size_splits=2, axis=1)
+    return mean, logvar
+
+   def reparameterize(self, mean, logvar):
       """
         Reparameterization trick for sampling from the latent distribution.
 
