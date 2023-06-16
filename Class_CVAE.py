@@ -218,42 +218,12 @@ class CVAE(Model):
     """      
     
     conv_architectures = [
-    
- #       [{'filters': 32, 'kernel_size':3, 'strides': 2, 'activation':'relu', 'padding':'valid'},
- #        {'filters': 64, 'kernel_size':3, 'strides': 2, 'activation':'relu', 'padding':'valid'},
- #        {'filters': 128, 'kernel_size':3, 'strides': 2, 'activation':'relu', 'padding':'valid'}     
- #       ],   
-    
- #       [{'filters': 32, 'kernel_size':3, 'strides': 2, 'activation':'tanh', 'padding':'valid'},
- #        {'filters': 64, 'kernel_size':3, 'strides': 2, 'activation':'tanh', 'padding':'valid'},
- #        {'filters': 128, 'kernel_size':3, 'strides': 2, 'activation':'tanh', 'padding':'valid'}     
- #        ], 
-    
+
         [{'filters': 64, 'kernel_size':3, 'strides': 2, 'activation':'tanh', 'padding':'valid'},
          {'filters': 128, 'kernel_size':3, 'strides': 2, 'activation':'tanh', 'padding':'valid'},
          {'filters': 256, 'kernel_size':3, 'strides': 2, 'activation':'tanh', 'padding':'valid'}
          ], 
-    
-
-    
-  #     [{'filters': 64, 'kernel_size':3, 'strides': 2, 'activation':'relu', 'padding':'valid'},
-  #      {'filters': 128, 'kernel_size':3, 'strides': 2, 'activation':'relu', 'padding':'valid'},
-  #      {'filters': 256, 'kernel_size':3, 'strides': 2, 'activation':'relu', 'padding':'valid'}     
-  #      ],   
-    
-  #    [{'filters': 64, 'kernel_size':3, 'strides': 2, 'activation':'tanh', 'padding':'valid'},
-  #     {'filters': 128, 'kernel_size':3, 'strides': 2, 'activation':'tanh', 'padding':'valid'},
-  #      ], 
-
-  #    [{'filters': 64, 'kernel_size':3, 'strides': 2, 'activation':'sigmoid', 'padding':'valid'},
-  #     {'filters': 128, 'kernel_size':3, 'strides': 2, 'activation':'sigmoid', 'padding':'valid'},
-  #     {'filters': 256, 'kernel_size':3, 'strides': 2, 'activation':'sigmoid', 'padding':'valid'}
-  #      ], 
-        
-  #    [{'filters': 64, 'kernel_size':3, 'strides': 2, 'activation':'elu', 'padding':'valid'},
-  #     {'filters': 128, 'kernel_size':3, 'strides': 2, 'activation':'elu', 'padding':'valid'},
-  #     {'filters': 256, 'kernel_size':3, 'strides': 2, 'activation':'elu', 'padding':'valid'}  
-  #      ],   
+   
      ]
 
     """
@@ -266,16 +236,5 @@ class CVAE(Model):
       [{'units':256, 'activation':'relu'},
        {'units':128, 'activation':'relu'},
         ],
-    
 
-    
-  #    [{'units':256, 'activation':'relu'},
-  #     {'units':128, 'activation':'relu'},
-  #     {'units':64, 'activation':'relu'},
-  #     ],
-    
-  #    [{'units':128, 'activation':'relu'},
-  #     {'units':64, 'activation':'relu'},
-  #     ],
- 
      ]
