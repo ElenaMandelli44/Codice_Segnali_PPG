@@ -88,3 +88,14 @@ val_size = x_val.shape[0]
 train_dataset = (tf.data.Dataset.from_tensor_slices(xy_train).shuffle(train_size).batch(batch_size, drop_remainder=True))
 val_dataset = (tf.data.Dataset.from_tensor_slices(xy_val).batch(batch_size, drop_remainder=True))
 test_dataset = (tf.data.Dataset.from_tensor_slices(xy_val).batch(batch_size, drop_remainder=True))
+
+
+ return (
+        train_dataset,
+        val_dataset,
+        test_dataset,
+        input_dim,
+        latent_dim,
+        label_dim,
+        input_dim,
+    )
