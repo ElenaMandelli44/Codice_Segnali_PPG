@@ -58,7 +58,7 @@ xy_test = np.hstack([x_test,y_test])
 
 input_dim = x_train.shape[1]
 latent_dim = y_train.shape[1]
-
+label_dim = latent_dim
 
 # Convert to tensor
 
