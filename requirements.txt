@@ -5,3 +5,4 @@ matplotlib >= 3.7.0
 pickle >= 0.7.5
 IPython >= 8.10.0
 tqdm >= 4.64.1 #avazamento, time
+ipdb >= 0.13.13 #metrics
