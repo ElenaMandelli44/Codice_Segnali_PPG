@@ -83,7 +83,26 @@ def generate_and_save_images(model, epoch, test_sample,input_dim)):
         result_y.append(z.numpy())
     return np.concatenate(result_x), np.concatenate(result_y)
   
-  
+        """ 
+         Trains or loads a CVAE model.
+
+             Args:
+                 latent_dim (int): Dimensionality of the latent space.
+                 train_dataset (tf.data.Dataset): Training dataset.
+                 test_dataset (tf.data.Dataset): Test dataset.
+                 val_dataset (tf.data.Dataset): Validation dataset.
+                 label_dim (int): Dimensionality of the label space.
+                 conv_architectures (list): List of configurations for the convolutional layers in the encoder/decoder network.
+                 linear_architectures (list): List of configurations for the linear layers in the encoder/decoder network.
+                 batch_size (int): Batch size.
+                 input_dim (int): Dimensionality of the input.
+                 epochs (int, optional): Number of training epochs. Default is 1.
+                 num_examples_to_generate (int, optional): Number of examples to generate during training. Default is 6.
+
+             Returns:
+                 CVAE: Trained CVAE model.
+          """   
+
     def train_or_load_model(
     *,
     latent_dim,
