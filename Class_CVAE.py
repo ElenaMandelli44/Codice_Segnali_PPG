@@ -45,7 +45,11 @@ class CVAE(Model):
 
 
             linear_layers = []
-            
+                    
+            linear_settings = linear_architectures [0]
+            linear_layers.append(tf.keras.layers.Dense(**linear_settings[0]))
+            linear_layers.append(tf.keras.layers.Dense(**linear_settings[1]))
+
                 """
                     A sequential model is created, starting with an input layer (tf.keras.layers.InputLayer) that specifies the shape of the input. 
                     The elements of the conv_layers list are then added to the model. 
