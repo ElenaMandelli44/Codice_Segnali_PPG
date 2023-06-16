@@ -182,7 +182,7 @@ class CVAE(Model):
             logvar (tf.Tensor): Log variance of the latent distribution.
 
         Returns:
-            tf.Tensor: Sampled latent vector.
+            tf.Tensor: A sample from the reparameterized latent distribution.
         """
               
          if eps is None:
