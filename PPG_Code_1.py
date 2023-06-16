@@ -734,7 +734,7 @@ def main():
         labels,
     ) = get_data(batch_size)
     model = train_or_load_model(
-        epochs=1,
+        epochs=300,
         train_dataset=train_dataset,
         test_dataset=test_dataset,
         val_dataset=val_dataset,
