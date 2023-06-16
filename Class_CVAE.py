@@ -72,7 +72,7 @@ class CVAE(Model):
                                     in the list should be a tuple containing the keyword arguments for `tf.keras.layers.Conv1D`.
         linear_architectures (list): A list of dense layer configurations for the decoder network. Each element in the
                                     list should be a tuple containing the keyword arguments for `tf.keras.layers.Dense`.
-         input_dim (int) : The dimensionality of the input signal.
+        input_dim (int) : The dimensionality of the input signal.
          
          
     Attributes:
@@ -81,13 +81,29 @@ class CVAE(Model):
         conv_layers (list): A list of convolutional layers in the encoder network.
         linear_layers (list): A list of dense layers in the decoder network.
         input_dim (int) :The dimensionality of the input signal.
+        encoder (tf.keras.Sequential): The encoder network of the CVAE model.
+        decoder (tf.keras.Sequential): The decoder network of the CVAE model.
+
+    Methods:
+        call(x, y): Executes the forward pass of the CVAE model given an input x and label y, returning the reconstructed
+            output, latent variables, mean, and log variance.
+        sample(eps=None, labels=None, num_samples=1): Generates samples from the CVAE model by decoding random or
+            specified latent variables and labels.
+        encode(x): Encodes the input x and returns the mean and log variance of the latent space.
+        reparameterize(mean, logvar): Reparameterizes the latent variables using the mean and log variance.
+        decode(z, labels, apply_sigmoid=False): Decodes the latent variables z and labels into reconstructed outputs.
+
     """"
    
     def __init__(self, latent_dim, label_dim, conv_layers_settings, linear_layers_settings, input_dim):
             super(CVAE, self).__init__()
             self.latent_dim = latent_dim
             self.label_dim = label_dim
-
+            self.input_dim = input_dim
+            self.encoder = self.build_encoder(conv_architectures, linear_architectures)
+            self.decoder = self.build_decoder(conv_architectures, linear_architectures)
+            
+    def build_encoder(self, conv_architectures, linear_architectures):
             conv_layers = []
 
             conv_settings = conv_architectures[0]  
@@ -111,20 +127,15 @@ class CVAE(Model):
                     The last layer is a dense layer (tf.keras.layers.Dense) with size latent_dim + latent_dim.
                     This layer returns the mean and log variance of the latent distribution.
                  """
-            for linear_settings in linear_layers_settings:
-                linear_layers.append(tf.keras.layers.Dense(**linear_settings))
+             return tf.keras.Sequential(
+                        [
+                            tf.keras.layers.InputLayer(input_shape=(self.input_dim, 1)),
+                            *conv_layers,
+                            *linear_layers,
+                            tf.keras.layers.Dense(2 * self.latent_dim),
+                        ]
+                    )
 
-
-            self.encoder = tf.keras.Sequential(
-               [
-                tf.keras.layers.InputLayer(input_shape=(input_dim, 1)),
-                *conv_layers,
-                tf.keras.layers.Flatten()
-                *linear_layers,
-                tf.keras.layers.Dense(latent_dim + latent_dim),
-                ]
-             )
-                    
            
        encoder_conv_layers_output_shape = self.encoder.layers[len(conv_layers)-1].output_shape[1:]
 
