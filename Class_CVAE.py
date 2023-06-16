@@ -12,12 +12,23 @@ from tensorflow.keras import backend as K
 class CVAE(Model):
     
     """"
-        The encoder network takes an input tensor, applies a series of convolutional layers followed by dense layers,
-        and outputs the mean and log variance of the latent distribution.
+    This class implements a convolutional variational autoencoder (CVAE) model. The encoder network takes an input tensor,
+    applies a series of convolutional layers followed by dense layers, and outputs the mean and log variance of the latent
+    distribution. The decoder network then takes a sampled latent variable and reconstructs the original input.
 
-        The decoder network takes a sample from the latent distribution, applies a series of transposed convolutional layers
-        followed by dense layers, and outputs a reconstructed input tensor.
-    
+    Args:
+        latent_dim (int): The dimensionality of the latent space.
+        label_dim (int): The dimensionality of the label space.
+        conv_architectures (list): A list of convolutional layer configurations for the encoder network. Each element
+            in the list should be a tuple containing the keyword arguments for `tf.keras.layers.Conv1D`.
+        linear_architectures (list): A list of dense layer configurations for the decoder network. Each element in the
+            list should be a tuple containing the keyword arguments for `tf.keras.layers.Dense`.
+
+    Attributes:
+        latent_dim (int): The dimensionality of the latent space.
+        label_dim (int): The dimensionality of the label space.
+        conv_layers (list): A list of convolutional layers in the encoder network.
+        linear_layers (list): A list of dense layers in the decoder network.
     """"
    
     def __init__(self, latent_dim, conv_layers_settings, linear_layers_settings):
