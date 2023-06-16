@@ -94,11 +94,23 @@ for conv_settings, linear_settings in product(conv_architectures, linear_archite
     optimizer = tf.keras.optimizers.Adam(1e-4)
 
     
-    # Generate new random images with the updated model
-    random_indices = random.sample(range(num_examples_to_generate), num_examples_to_generate)
-    random_sample = tf.gather(test_sample, random_indices)
-    
-    model = CVAE(latent_dim, conv_architectures[0], linear_architectures[0])
+    # Generate a new random vector on each iteration
+    random_vector = tf.random.normal(shape=(num_examples_to_generate, latent_dim))
+
+    """
+    Creates an instance of the CVAE (Conditional Variational Autoencoder) model with the given latent dimension, convolutional settings, and linear settings.
+
+    Parameters:
+        latent_dim (int): The dimensionality of the latent space.
+        conv_settings (tuple): A tuple containing the convolutional settings for the model.
+        linear_settings (tuple): A tuple containing the linear settings for the model.
+
+    Returns:
+        model (CVAE): An instance of the CVAE model.
+    """
+
+    model = CVAE(latent_dim, conv_settings, linear_settings)
+
 
   
     # Pick a sample of the test set for generating output images
