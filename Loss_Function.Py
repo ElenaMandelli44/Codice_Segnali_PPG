@@ -22,14 +22,13 @@ def log_normal_pdf(sample, mean, logvar, raxis=1):
         axis=raxis
     )
 
-
-def compute_loss(model, x):
+def compute_loss (model, x, input_dim):
     """Compute the loss function for the CVAE model.
 
         Args:
             model (CVAE): CVAE model.
             x (tf.Tensor): Input data.
-
+            input_dim (int): Dimensionality of the input signal.
         Returns:
             tf.Tensor: Loss value.
             
@@ -40,26 +39,17 @@ def compute_loss(model, x):
          and the MSE term for an additional output of the encoder (y_loss). The final loss value is the sum of these terms.
          
     """
-    
+   
     
     x_x = x[:, :input_dim, :]
     y = x[:, input_dim:, 0]
     x = x_x
-    mse = tf.keras.losses.MeanSquaredError(reduction=tf.keras.losses.Reduction.NONE)
-    mean, logvar = model.encode(x)
-    z = model.reparameterize(mean, logvar)
-    x_logit = model.decode(z)
-
-    cross_ent = mse(x_logit, x)
+    x_logit, z, mean, logvar = model(x, y)
+    cross_ent = (x_logit - tf.squeeze(x, -1)) ** 2
     logpx_z = -tf.reduce_sum(cross_ent, axis=[1])
     logpz = log_normal_pdf(z, 0., 0.)
     logqz_x = log_normal_pdf(z, mean, logvar)
-    kl_divergence = tf.reduce_mean(logqz_x - logpz)
-    
-    mse_loss = tf.reduce_mean(cross_ent)
-    kl_weight = 0.01  # Weight to balance the importance of KL divergence
-    total_loss = mse_loss + kl_weight * kl_divergence
-    return mse_loss
+    return -tf.reduce_mean(logpx_z + logpz - logqz_x)
 
 
 def train_step(model, x, optimizer):
