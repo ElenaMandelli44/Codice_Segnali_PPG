@@ -38,31 +38,3 @@ def generate_samples_from_age(model, train_labels, age, n):
    return np.concatenate(result_x), np.concatenate(result_y)
 
 
-X_generate = []
-Z_generate = []
-for age in range(18,31):
-    x, z = generate_samples_from_age(model, train_labels, age, 688 )
-    X_generate.append(x)
-    Z_generate.append(z)
-X_generate = np.concatenate(X_generate)
-Z_generate = np.concatenate(Z_generate)
-Z_generate = pd.DataFrame(Z_generate, columns=train_labels.columns)
-
-file_path = 'generate_signal_PPG.pkl'
-
-if os.path.exists(file_path):
-    with open(file_path, 'rb') as f:
-        existing_data = pickle.load(f)
-        
-    existing_data['samples'] = np.concatenate([existing_data['samples'], X_generate])
-    existing_data['labels'] = pd.concat([existing_data['labels'], Z_generate])
-
-    with open(file_path, 'wb') as f:
-        pickle.dump(existing_data, f)
-else:
-    generate = {'samples': X_generate, 'labels': Z_generate}
-    with open(file_path, 'wb') as f:
-        pickle.dump(generate, f)
-
-Z_generate
-X_generate
