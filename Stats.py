@@ -6,15 +6,16 @@ import pickle
 import pandas as pd
 from scipy.signal import find_peaks
 from tqdm import tqdm
-
+from scipy.stats import spearmanr
 
 def compute_metrics(y_true, y_pred):
 
-
+    # Spearman correlation
+    spearman_corr, _ = spearmanr(y_true, y_pred)
 
     # Mean Squared Error (MSE)
     mse = mean_squared_error(y_true, y_pred)
-    return  mse
+    return  spearman_corr, mse
 
 
 def analyze():
@@ -66,8 +67,8 @@ def analyze():
             test_age_signal = test[test_age_idx]
             for gen_age_idx in gen_age_indices:
                 gen_age_signal = gen[gen_age_idx]
-                , mse = compute_metrics(test_age_signal, gen_age_signal)
-                all_metrics.append([, mse])
+                spearman_corr, mse = compute_metrics(test_age_signal, gen_age_signal)
+                all_metrics.append([spearman_corr, mse])
 
         all_metrics_array = np.asarray(all_metrics).mean(axis=0)
         if np.isnan(all_metrics_array).any():
@@ -77,9 +78,9 @@ def analyze():
     metrics_per_age = np.asarray(metrics_per_age)
 
     _, ax = plt.subplots(2, 1, figsize=(10, 5))
-    ax[0].plot(unique_ages, metrics_per_age[:, 0], "o", label="")
+    ax[0].plot(unique_ages, metrics_per_age[:, 0], "o", label="spearman_corr")
     ax[0].set_xlabel("Age")
-    ax[0].set_ylabel("")
+    ax[0].set_ylabel("spearman_corr")
     ax[0].legend()
     ax[1].plot(unique_ages, metrics_per_age[:, 1], "o", label="MSE")
     ax[1].set_xlabel("Age")
