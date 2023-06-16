@@ -56,7 +56,7 @@ def generate_and_save_images(model, epoch, test_sample,input_dim)):
     plt.show()
        
       
-  def generate_samples(model, sample, n):
+  def generate_samples(model, sample, n , input_dim):
     """
         Generates samples using the model.
 
@@ -64,7 +64,8 @@ def generate_and_save_images(model, epoch, test_sample,input_dim)):
         model (CVAE): The neural network model.
         sample (ndarray): Data sample.
         n (int): Number of samples to generate.
-
+        input_dim (int): Dimensionality of the input.
+        
         Returns:
         ndarray: Generated samples (predictions).
         ndarray: Corresponding latent vectors for the generated samples.
@@ -80,7 +81,6 @@ def generate_and_save_images(model, epoch, test_sample,input_dim)):
         result_x.append(predictions.numpy())
         result_y.append(z.numpy())
     return np.concatenate(result_x), np.concatenate(result_y)
-  
   
   
   # PLOTTING
