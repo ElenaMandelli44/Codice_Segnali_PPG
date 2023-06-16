@@ -156,19 +156,24 @@ class CVAE(Model):
             linear_layers (list): A list of dense layers in the decoder network. 
         """
         
-
-        conv_settings = conv_architectures[0]  
-        conv_layers.append(tf.keras.layers.Conv1D(**conv_settings[2]))
-        conv_layers.append(tf.keras.layers.Conv1D(**conv_settings[1]))
-        conv_layers.append(tf.keras.layers.Conv1D(**conv_settings[0]))
-
         
-        linear_layers = []
         
-        linear_settings = linear_architectures [0]
-        linear_layers.append(tf.keras.layers.Dense(**linear_settings[1]))
-        linear_layers.append(tf.keras.layers.Dense(**linear_settings[0]))
-       
+        def build_decoder(self, conv_architectures, linear_architectures):
+            conv_layers = []   
+                    
+
+            conv_settings = conv_architectures[0]  
+            conv_layers.append(tf.keras.layers.Conv1D(**conv_settings[2]))
+            conv_layers.append(tf.keras.layers.Conv1D(**conv_settings[1]))
+            conv_layers.append(tf.keras.layers.Conv1D(**conv_settings[0]))
+
+
+            linear_layers = []
+
+            linear_settings = linear_architectures [0]
+            linear_layers.append(tf.keras.layers.Dense(**linear_settings[1]))
+            linear_layers.append(tf.keras.layers.Dense(**linear_settings[0]))
+
                 
         """   
             A sequential model is constructed, starting with an input layer (tf.keras.layers.InputLayer) that specifies the input shape. 
@@ -182,22 +187,21 @@ class CVAE(Model):
             Another Reshape layer is included to reshape the output to match the dimensions (input_dim, 1).
 
         """        
+            return tf.keras.Sequential(
+                    [
+                        tf.keras.layers.InputLayer(
+                            input_shape=(self.latent_dim + self.label_dim)
+                        ),  # Aggiungiamo 1 per l'input della label
+                        *linear_layers,
+                        # inserts unsqueeze
+                        tf.keras.layers.Reshape((256, 1)),
+                        *conv_layers,
+                        tf.keras.layers.Conv1DTranspose(filters=1, kernel_size=1, strides=1),
+                        tf.keras.layers.Flatten(),
+                        tf.keras.layers.Dense(1024),
+                    ]
+                )
             
-         self.decoder = tf.keras.Sequential(
-          [
-            tf.keras.layers.InputLayer(input_shape=(latent_dim,)),
-            *linear_layers,
-
-            tf.keras.layers.Dense(units=encoder_conv_layers_output_shape[0]*encoder_conv_layers_output_shape[1]),
-            tf.keras.layers.Reshape(target_shape=encoder_conv_layers_output_shape),
-            *conv_layers,
-            tf.keras.layers.Conv1DTranspose(filters=1, kernel_size=3, strides=2, padding='valid'),
-            tf.keras.layers.Lambda(lambda x: tf.expand_dims(x, axis=-1)),
-         
-            tf.keras.layers.Resizing(input_dim, 1),
-            tf.keras.layers.Reshape(target_shape=(input_dim, 1)),
-          ]
-            )              
 
 # The CVAE model can also be used to generate new samples from the learned distribution using the sample() method.
 
