@@ -87,4 +87,23 @@ def analyze():
     ax[1].set_ylabel("MSE")
     ax[1].legend()
     plt.show()
+    
+    
+    
+    # Calculate and display the average and median of MSE and Spearman correlation
+    mse_average = np.average(metrics_per_age[:, 0])
+    mse_median = np.median(metrics_per_age[:, 0])
+    spearman_average = np.average(metrics_per_age[:, 1])
+    spearman_median = np.median(metrics_per_age[:, 1])
+    print(f"Average MSE: {mse_average}")
+    print(f"Median MSE: {mse_median}")
+    print(f"Average Spearman Corr: {spearman_average}")
+    print(f"Median Spearman Corr: {spearman_median}")
+
+    plt.show()
+
+
+if __name__ == "__main__":
+    analyze()
+
 
