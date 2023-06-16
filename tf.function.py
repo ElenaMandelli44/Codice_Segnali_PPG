@@ -161,7 +161,15 @@ def generate_and_save_images(model, epoch, test_sample,input_dim)):
                 val_losses.append(compute_loss(model, val_x, input_dim))
                 val_losses = np.array(val_losses).mean()
 
-                                                
+                with writer.as_default():
+                    tf.summary.scalar("train_loss", train_losses, step=epoch)
+                    tf.summary.scalar("val_loss", val_losses, step=epoch)
+
+                if val_losses < best_loss:
+                    best_loss = val_losses
+                    patience = 0
+                    print(f"Saving model")
+                    model.save_weights("trained_model")                                
                                                 
                                                 
                 if loss_result < best_loss:
