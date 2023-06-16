@@ -5,7 +5,25 @@ import time
 from IPython import display
 from itertools import product
 
+def train_step(model, x, optimizer, input_dim):
+   """  
+   Performs one training step for the CVAE model.
+   Calculate loss, calculate gradients, and apply model weight updates using the optimizer
 
+        Args:
+            model (CVAE): CVAE model to be trained.
+            x (tf.Tensor): Batch of training data.
+            optimizer (tf.keras.optimizers.Optimizer): Optimizer for updating the model weights.
+            input_dim (int): Input dimensionality.
+
+        Returns:
+               loss
+    """
+   with tf.GradientTape() as tape:     # To compute gradients of model weights versus loss
+        loss = compute_loss(model, x, input_dim)
+   gradients = tape.gradient(loss, model.trainable_variables) # To compute the gradients of the loss with respect to the model weights
+   optimizer.apply_gradients(zip(gradients, model.trainable_variables)) #Update weights model
+   return loss
 
 def generate_and_save_images(model, epoch, test_sample):
   """
