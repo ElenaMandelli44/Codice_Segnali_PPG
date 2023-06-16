@@ -77,8 +77,20 @@ class CVAE(Model):
        encoder_conv_layers_output_shape = self.encoder.layers[len(conv_layers)-1].output_shape[1:]
 
         """      
-        The decoder network takes a sample from the latent distribution, applies a series of transposed 
-        convolutional layers followed by dense layers, and outputs a reconstructed input tensor. 
+        Decoder network for the convolutional variational autoencoder (CVAE).
+
+        This network takes a sample from the latent distribution, applies a series of transposed convolutional layers
+        followed by dense layers, and outputs a reconstructed input tensor.
+
+        Args:
+            conv_architectures (list): A list of transposed convolutional layer configurations for the decoder network.
+                Each element in the list should be a tuple containing the keyword arguments for `tf.keras.layers.Conv1D`.
+            linear_architectures (list): A list of dense layer configurations for the decoder network. Each element in
+                the list should be a tuple containing the keyword arguments for `tf.keras.layers.Dense`.
+
+        Attributes:
+            conv_layers (list): A list of transposed convolutional layers in the decoder network.
+            linear_layers (list): A list of dense layers in the decoder network. 
         """
         
         conv_layers = []
