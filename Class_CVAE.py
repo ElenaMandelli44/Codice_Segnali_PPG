@@ -69,18 +69,21 @@ class CVAE(Model):
         latent_dim (int): The dimensionality of the latent space.
         label_dim (int): The dimensionality of the label space.
         conv_architectures (list): A list of convolutional layer configurations for the encoder network. Each element
-            in the list should be a tuple containing the keyword arguments for `tf.keras.layers.Conv1D`.
+                                    in the list should be a tuple containing the keyword arguments for `tf.keras.layers.Conv1D`.
         linear_architectures (list): A list of dense layer configurations for the decoder network. Each element in the
-            list should be a tuple containing the keyword arguments for `tf.keras.layers.Dense`.
-
+                                    list should be a tuple containing the keyword arguments for `tf.keras.layers.Dense`.
+         input_dim (int) : The dimensionality of the input signal.
+         
+         
     Attributes:
         latent_dim (int): The dimensionality of the latent space.
         label_dim (int): The dimensionality of the label space.
         conv_layers (list): A list of convolutional layers in the encoder network.
         linear_layers (list): A list of dense layers in the decoder network.
+        input_dim (int) :The dimensionality of the input signal.
     """"
    
-    def __init__(self, latent_dim, label_dim, conv_layers_settings, linear_layers_settings):
+    def __init__(self, latent_dim, label_dim, conv_layers_settings, linear_layers_settings, input_dim):
             super(CVAE, self).__init__()
             self.latent_dim = latent_dim
             self.label_dim = label_dim
