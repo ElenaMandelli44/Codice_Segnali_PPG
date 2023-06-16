@@ -5,6 +5,7 @@ import time
 from IPython import display
 from itertools import product
 
+
 def train_step(model, x, optimizer, input_dim):
    """  
    Performs one training step for the CVAE model.
