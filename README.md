@@ -58,20 +58,14 @@ after implementing a hyperparameter tuning, these are the parameters that optimi
 
 
 \begin{center}
-\begin{tabular}{ |c|c| } 
-\hline
-parameters & values \\
-\hline
-{Number of layers encoder } & 7  \\ 
-{Number of layers decoder } & 12  \\ 
-{Numbers of filters} & 64-128-256 \\ 
-{Activation function}  & Tahn \\ 
-{Padding } & Valid \\
-{ Kernel Size} & 3\\
-{ Strides} & 2\\
-{Learning Rate} & 0.0001\\
-{Optimizer} & Adam \\
-\hline
-
-\end{tabular}
-\end{center}
+| parameters                 | values       |
+| -------------------------- | ------------ |
+| Number of layers encoder   | 7            |
+| Number of layers decoder   | 12           |
+| Numbers of filters         | 64-128-256   |
+| Activation function        | Tanh         |
+| Padding                    | Valid        |
+| Kernel Size                | 3            |
+| Strides                    | 2            |
+| Learning Rate              | 0.0001       |
+| Optimizer                  | Adam         |
