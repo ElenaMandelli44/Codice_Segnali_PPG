@@ -34,11 +34,15 @@ class CVAE(Model):
     def __init__(self, latent_dim, label_dim, conv_layers_settings, linear_layers_settings):
             super(CVAE, self).__init__()
             self.latent_dim = latent_dim
+            self.label_dim = label_dim
+
             conv_layers = []
-            for conv_settings in conv_layers_settings:
 
+            conv_settings = conv_architectures[0]  
+            conv_layers.append(tf.keras.layers.Conv1D(**conv_settings[0]))
+            conv_layers.append(tf.keras.layers.Conv1D(**conv_settings[1]))
+            conv_layers.append(tf.keras.layers.Conv1D(**conv_settings[2]))
 
-            conv_layers.append(tf.keras.layers.Conv1D(**conv_settings))
 
             linear_layers = []
             
