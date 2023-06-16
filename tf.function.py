@@ -138,12 +138,14 @@ def generate_and_save_images(model, epoch, test_sample,input_dim)):
 
             random_vector = tf.random.normal(
                 shape=(num_examples_to_generate, latent_dim)
-            )
+            )  #generate examples during training.
 
             assert batch_size >= num_examples_to_generate
             for test_batch in test_dataset.take(1):
                 test_sample = test_batch[0:num_examples_to_generate, :, :]
-
+            
+            #parameters for controlling patience in training.
+                                                
             max_patience = 10
             patience = 0
             best_loss = float("inf")
