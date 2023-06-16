@@ -1,3 +1,6 @@
+
+# DON'T NEED IT, signal already preprocessed 
+
 import numpy as np
 from sklearn.preprocessing import StandardScaler
 from sklearn.impute import SimpleImputer
