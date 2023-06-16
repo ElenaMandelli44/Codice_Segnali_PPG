@@ -39,6 +39,20 @@ def generate_samples_from_age(model, train_labels, age, n):
 
 
 def save_samples_from_age_range(model, train_labels, min_age, max_age, n):
+    """
+       Generates and saves samples from a range of ages using the given model.
+
+       Args:
+           model (CVAE): Trained CVAE model used for generating samples.
+           train_labels (pd.DataFrame): DataFrame of training labels.
+           min_age (int): Minimum age value for generating samples (inclusive).
+           max_age (int): Maximum age value for generating samples (exclusive).
+           n (int): Number of samples to generate for each age.
+
+       Returns:
+           None
+    """   
+  
     X_generate = []
     Z_generate = []
     for age in range(min_age, max_age):
