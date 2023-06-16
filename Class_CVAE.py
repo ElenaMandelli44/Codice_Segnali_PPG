@@ -220,8 +220,8 @@ class CVAE(Model):
             """
             
             mean, logvar = self.encode(x)
-            z = self.reparameterize(mean, logvar)
-            x_logit = self.decode(z, y)
+            z = self.reparameterize(mean, logvar) #returns the sampled latent variables z.
+            x_logit = self.decode(z, y) # #The decode function takes the sampled latent variables z and the conditional information y as input and decodes them to generate the reconstructed output x_logit
             return x_logit, z, mean, logvar
             def sample(self, eps=None, labels=None):
 
@@ -232,9 +232,11 @@ class CVAE(Model):
             Generates samples by decoding random or specified latent variables and labels.
 
             Args:
-                eps (tf.Tensor, optional): Latent variables. If not provided, random samples will be generated.
-                labels (tf.Tensor, optional): Labels. If not provided, random samples will be generated.
-                num_samples (int, optional): Number of samples to generate. Defaults to 1.
+                eps (tf.Tensor, optional): Latent variables.  A noise tensor sampled from the latent space. 
+                                            If not provided, random samples will be generated.
+                labels (tf.Tensor, optional): A label tensor. If provided, it is combined with the sampled noise to generate the decoded samples.
+                                              If not provided, random labels sampled from a normal distribution are generated.
+                num_samples (int, optional): The number of samples to generate. This value is used only if eps and labels are not provided.
 
             Returns:
                 tf.Tensor: Decoded samples.
@@ -255,7 +257,7 @@ class CVAE(Model):
                 if not labels is None
                 else tf.random.normal(shape=(num_samples, self.label_dim))
             )
-            return self.decode(eps, labels, apply_sigmoid=True)
+            return self.decode(eps, labels, apply_sigmoid=True) # apply_sigmoid=True It is useful to apply sigmoid to get a final output that looks like a probability distribution
 
 
         def encode(self, x):
@@ -272,7 +274,7 @@ class CVAE(Model):
             
             x = self.encoder(x)
             x = x[:, 2 * (x.shape[1] // 2)]
-            mean, logvar = tf.split(x, num_or_size_splits=2, axis=1)
+            mean, logvar = tf.split(x, num_or_size_splits=2, axis=1) #Division is done to separate this information into two distinct tensors
             return mean, logvar
 
 
@@ -289,7 +291,8 @@ class CVAE(Model):
             """
             
             eps = tf.random.normal(shape=tf.shape(mean))
-            return eps * tf.exp(logvar * 0.5) + mean
+            return eps * tf.exp(logvar * 0.5) + mean     #Sampling from the latent distribution
+
 
 
         def decode(self, z, labels, apply_sigmoid=False):
