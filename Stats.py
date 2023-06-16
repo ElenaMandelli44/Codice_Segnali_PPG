@@ -1,7 +1,7 @@
 import numpy as np
 import ipdb
 import matplotlib.pyplot as plt
-from sklearn.metrics import r2_score, mean_squared_error
+from sklearn.metrics import  mean_squared_error
 import pickle
 import pandas as pd
 from scipy.signal import find_peaks
