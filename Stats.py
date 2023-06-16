@@ -19,6 +19,23 @@ def compute_metrics(y_true, y_pred):
 
 
 def analyze():
+    """
+    Perform analysis on test and predicted data.
+
+    This function performs the following steps:
+    1. Sets the working directory.
+    2. Loads test data from a pickle file.
+    3. Normalizes the test data.
+    4. Retrieves the predicted signals and labels from a pickle file.
+    5. Normalizes the predicted signals.
+    6. Determines the unique ages present in the predicted data that also exist in the test data.
+    7. Computes metrics (R2 and MSE) for each age, comparing the test and generated signals.
+    8. Plots the computed metrics (R2 and MSE) against the ages.
+
+    """
+
+   
+
     # Definition of working directory
     working_dir = ""
 
