@@ -1,1 +1,2 @@
 installed tensorflow-2.12.0
+pandas>=1.5.3
