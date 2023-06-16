@@ -38,3 +38,16 @@ def generate_samples_from_age(model, train_labels, age, n):
    return np.concatenate(result_x), np.concatenate(result_y)
 
 
+def save_samples_from_age_range(model, train_labels, min_age, max_age, n):
+    X_generate = []
+    Z_generate = []
+    for age in range(min_age, max_age):
+        x, z = generate_samples_from_age(model, train_labels, age, n)
+        X_generate.append(x)
+        Z_generate.append(z)
+    X_generate = np.concatenate(X_generate)
+    Z_generate = np.concatenate(Z_generate)
+    with open(f"generated_samples_{min_age}_{max_age}2.pickle", "wb") as f:
+        pickle.dump((X_generate, Z_generate), f)
+    print("Successfully saved samples")
+
