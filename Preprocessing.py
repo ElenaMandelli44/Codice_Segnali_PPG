@@ -21,7 +21,6 @@ def get_data (batch_size):
     - input_dim: Dimension of the input signals.
     - latent_dim: Dimension of the target labels.
     - label_dim: Dimension of the target labels.
-    - input_dim: Dimension of the input signals.
     """
 
 
