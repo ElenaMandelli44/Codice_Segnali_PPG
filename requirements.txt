@@ -2,3 +2,4 @@ installed tensorflow-2.12.0
 pandas >=1.5.3
 numpy >= 1.23.5
 matplotlib >= 3.7.0
+pickle >= 0.7.5
