@@ -7,7 +7,7 @@ import pandas as pd
 
 
 # Definition of working directory
-working_dir = "/Users/elenamandelli/Desktop/PPG/"
+working_dir = "/Users/elenamandelli/Desktop/PPG_Project/"
 
 # Loading training data
 with open(working_dir + "train_db_1p.pickle", "rb") as file:
