@@ -114,6 +114,5 @@ def get_data (batch_size):
             test_dataset,
             input_dim,
             latent_dim,
-            label_dim,
-            input_dim,
+            label_dim
         )
