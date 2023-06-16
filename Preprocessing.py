@@ -85,7 +85,6 @@ val_size = x_val.shape[0]
 """ The from_tensor_slices() method takes in an input tensor (xy_train, xy_val, or xy_test) 
     and creates a dataset where each element of the tensor becomes an element of the dataset """
 
-train_dataset = (tf.data.Dataset.from_tensor_slices(xy_train)
-                 .shuffle(train_size).batch(batch_size))
-val_dataset = (tf.data.Dataset.from_tensor_slices(xy_val).batch(batch_size))
-test_dataset = (tf.data.Dataset.from_tensor_slices(xy_test).batch(batch_size))
+train_dataset = (tf.data.Dataset.from_tensor_slices(xy_train).shuffle(train_size).batch(batch_size, drop_remainder=True))
+val_dataset = (tf.data.Dataset.from_tensor_slices(xy_val).batch(batch_size, drop_remainder=True))
+test_dataset = (tf.data.Dataset.from_tensor_slices(xy_val).batch(batch_size, drop_remainder=True))
