@@ -140,30 +140,17 @@ class CVAE(Model):
 
 
   @tf.function
-  def sample(self, eps=None):
+  def sample(self, eps=None, labels=None):
                
-       """Generate samples from the learned distribution.
-
-        Args:
-            eps (tf.Tensor): Random samples from the latent distribution. If None, new samples are generated.
-
-        Returns:
-            tf.Tensor: Generated samples.
-        """         
-               
-    if eps is None:
-      eps = tf.random.normal(shape=(100, self.latent_dim))
-    return self.decode(eps, apply_sigmoid=True)
-
-  def encode(self, x):
       """
-        Encode the input data and compute mean and log variance of the latent distribution.
+        Generates samples from the decoder network by sampling from the latent distribution.
 
         Args:
-            x (tf.Tensor): Input data.
+            eps (tf.Tensor, optional): A tensor of samples from the standard normal distribution. If not provided, it
+                will be sampled from a standard normal distribution with shape (100, latent_dim).
+            labels (tf.Tensor, optional): A tensor of labels corresponding to the samples. This is used to condition
+                the decoder network. If not provided, no labels will be used.
 
-        Returns:
-            tuple: Mean and log variance of the latent distribution.
         """         
                
     mean, logvar = tf.split(self.encoder(x), num_or_size_splits=2, axis=1)
@@ -180,10 +167,10 @@ class CVAE(Model):
         Returns:
             tf.Tensor: Sampled latent vector.
         """
-               
-      
-    eps = tf.random.normal(shape=mean.shape)
-    return eps * tf.exp(logvar * .5) + mean
+              
+         if eps is None:
+            eps = tf.random.normal(shape=(100, self.latent_dim))
+         return self.decode(eps, labels, apply_sigmoid=True)
 
   def decode(self, z, apply_sigmoid=False):
        """
