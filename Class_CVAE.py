@@ -203,12 +203,12 @@ class CVAE(Model):
         Returns:
             tf.Tensor: Reconstructed input tensor.
         """        
-               
-    logits = self.decoder(z)
-    if apply_sigmoid:
-      probs = tf.sigmoid(logits)
-      return probs
-    return logits
+        z_concat = tf.concat([z, labels], axis=1)          
+        logits = self.decoder(z_concat)
+        if apply_sigmoid:
+          probs = tf.sigmoid(logits)
+          return probs
+        return logits
 
           
           
