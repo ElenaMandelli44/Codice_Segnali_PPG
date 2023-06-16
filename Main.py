@@ -7,7 +7,6 @@ def main():
         input_dim,
         latent_dim,
         label_dim,
-        input_dim,
         labels,
     ) = get_data(batch_size)
     model = train_or_load_model(
