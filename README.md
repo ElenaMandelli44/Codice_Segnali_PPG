@@ -56,8 +56,6 @@ The code structure is organized into several sections. Below is a description of
 
 after implementing a hyperparameter tuning, these are the parameters that optimized the code the best
 
-
-\begin{center}
 | parameters                 | values       |
 | -------------------------- | ------------ |
 | Number of layers encoder   | 7            |
