@@ -44,15 +44,15 @@ class CVAE(Model):
                 linear_layers.append(tf.keras.layers.Dense(**linear_settings))
 
 
-        self.encoder = tf.keras.Sequential(
-           [
-            tf.keras.layers.InputLayer(input_shape=(input_dim, 1)),
-            *conv_layers,
-            tf.keras.layers.Flatten()
-            *linear_layers,
-            tf.keras.layers.Dense(latent_dim + latent_dim),
-            ]
-         )
+            self.encoder = tf.keras.Sequential(
+               [
+                tf.keras.layers.InputLayer(input_shape=(input_dim, 1)),
+                *conv_layers,
+                tf.keras.layers.Flatten()
+                *linear_layers,
+                tf.keras.layers.Dense(latent_dim + latent_dim),
+                ]
+             )
                     
            
        encoder_conv_layers_output_shape = self.encoder.layers[len(conv_layers)-1].output_shape[1:]
@@ -98,7 +98,7 @@ class CVAE(Model):
             tf.keras.layers.Resizing(input_dim, 1),
             tf.keras.layers.Reshape(target_shape=(input_dim, 1)),
           ]
-      )              
+            )              
 
 # The CVAE model can also be used to generate new samples from the learned distribution using the sample() method.
 
