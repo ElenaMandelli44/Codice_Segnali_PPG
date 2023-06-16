@@ -1,8 +1,3 @@
-import tensorflow as tf
-import numpy as np
-
-#Define a Convolutional Variational Autoencoder (CVAE) model using TensorFlow Keras. The model consists of an encoder and decoder network.
-
 
 import tensorflow as tf
 from tensorflow.keras.layers import Input, Conv2D, Flatten, Dense, Reshape, Conv2DTranspose
