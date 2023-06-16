@@ -31,7 +31,7 @@ class CVAE(Model):
         linear_layers (list): A list of dense layers in the decoder network.
     """"
    
-    def __init__(self, latent_dim, conv_layers_settings, linear_layers_settings):
+    def __init__(self, latent_dim, label_dim, conv_layers_settings, linear_layers_settings):
             super(CVAE, self).__init__()
             self.latent_dim = latent_dim
             conv_layers = []
