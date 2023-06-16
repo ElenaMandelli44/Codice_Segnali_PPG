@@ -7,14 +7,6 @@ import os
 import pickle
 
 
-# Generate new random signals with the updated model
-random_indices = random.sample(range(num_examples_to_generate), num_examples_to_generate)
-random_sample = tf.gather(test_sample, random_indices)
-
-generate_and_save_images(model, epoch, random_sample)
-
-
-
 def generate_samples_from_age(model, train_labels, age, n):
    
       """
