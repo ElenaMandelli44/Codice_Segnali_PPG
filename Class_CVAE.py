@@ -232,75 +232,7 @@ class CVAE(Model):
             def sample(self, eps=None, labels=None):
 
        
-      def sample(self, eps=None, labels=None):
 
-          """
-            Generates samples from the decoder network by sampling from the latent distribution.
-
-            Args:
-                eps (tf.Tensor, optional): A tensor of samples from the standard normal distribution. If not provided, it
-                    will be sampled from a standard normal distribution with shape (100, latent_dim).
-                labels (tf.Tensor, optional): A tensor of labels corresponding to the samples. This is used to condition
-                    the decoder network. If not provided, no labels will be used.
-
-            """         
-
-        mean, logvar = tf.split(self.encoder(x), num_or_size_splits=2, axis=1)
-        return mean, logvar
-
-
-      def encode(self, x):
-        """
-        Encodes an input tensor and computes the mean and log variance of the latent distribution.
-
-        Args:
-            x (tf.Tensor): The input tensor to encode.
-
-        Returns:
-            tf.Tensor: The mean of the latent distribution.
-            tf.Tensor: The log variance of the latent distribution.
-
-        """
-        x = self.encoder(x)
-        mean, logvar = tf.split(x, num_or_size_splits=2, axis=1)
-        return mean, logvar
-
-       def reparameterize(self, mean, logvar):
-          """
-            Reparameterization trick for sampling from the latent distribution.
-
-            Args:
-                mean (tf.Tensor): Mean of the latent distribution.
-                logvar (tf.Tensor): Log variance of the latent distribution.
-
-            Returns:
-                tf.Tensor: A sample from the reparameterized latent distribution.
-            """
-
-             if eps is None:
-                eps = tf.random.normal(shape=(100, self.latent_dim))
-             return self.decode(eps, labels, apply_sigmoid=True)
-
-       def decode(self, z, labels, apply_sigmoid=False):
-
-           """
-
-            Decodes a sample from the latent distribution and reconstructs the original input.
-
-            Args:
-                 z (tf.Tensor): The sample from the latent distribution.
-                 labels (tf.Tensor): The labels used to condition the decoder network.
-                 apply_sigmoid (bool, optional): Whether to apply the sigmoid activation function to the output logits.
-                                                     Defaults to False.
-            Returns:
-                tf.Tensor: Reconstructed input tensor.
-            """        
-            z_concat = tf.concat([z, labels], axis=1)          
-            logits = self.decoder(z_concat)
-            if apply_sigmoid:
-              probs = tf.sigmoid(logits)
-              return probs
-            return logits
 
 
 
