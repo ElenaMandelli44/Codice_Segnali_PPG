@@ -118,7 +118,62 @@ def generate_and_save_images(model, epoch, test_sample,input_dim)):
     num_examples_to_generate=6,
      ):  
       
-      model = CVAE(
+     model = CVAE(
            latent_dim, label_dim, conv_architectures, linear_architectures, input_dim
          )
-      
+    epochs = 100
+    num_examples_to_generate = 6
+
+    if not os.path.exists("trained_model"):
+        for conv_settings, linear_settings in product(
+            conv_architectures, linear_architectures
+        ):
+            print("---------")
+            print(conv_settings)
+            print(linear_settings)
+            optimizer = tf.keras.optimizers.Adam(1e-4)
+
+            random_vector = tf.random.normal(
+                shape=(num_examples_to_generate, latent_dim)
+            )
+
+            assert batch_size >= num_examples_to_generate
+            for test_batch in test_dataset.take(1):
+                test_sample = test_batch[0:num_examples_to_generate, :, :]
+
+            max_patience = 10
+            patience = 0
+            best_loss = float("inf")
+
+            for epoch in range(1, epochs + 1):
+                start_time = time.time()
+                for train_x in train_dataset:
+                    train_step(model, train_x, optimizer)
+                end_time = time.time()
+
+                loss = tf.keras.metrics.Mean()
+                for val_x in val_dataset:
+                    loss(compute_loss(model, val_x, input_dim))
+                loss_result = loss.result()
+
+                if loss_result < best_loss:
+                    best_loss = loss_result
+                    patience = 0
+                else:
+                    patience += 1
+
+                display.clear_output(wait=False)
+                print(
+                    "Epoch: {}, Val set LOSS: {}, time elapsed for current epoch: {}".format(
+                        epoch, loss_result, end_time - start_time
+                    )
+                )
+        print(f"Saving model")
+        model.save_weights("trained_model")
+    else:
+        print(f"Found model, loading it.")
+        model.load_weights("trained_model")
+
+    return model
+
+   
