@@ -171,25 +171,20 @@ def generate_and_save_images(model, epoch, test_sample,input_dim)):
                     print(f"Saving model")
                     model.save_weights("trained_model")                                
                                                 
-                                                
-                if loss_result < best_loss:
-                    best_loss = loss_result
-                    patience = 0
                 else:
                     patience += 1
 
                 display.clear_output(wait=False)
                 print(
-                    "Epoch: {}, Val set LOSS: {}, time elapsed for current epoch: {}".format(
-                        epoch, loss_result, end_time - start_time
+                     f"Epoch: {epoch}, Val set LOSS: {val_losses}, time elapsed for current epoch: {end_time - start_time}"
                     )
                 )
-        print(f"Saving model")
-        model.save_weights("trained_model")
     else:
         print(f"Found model, loading it.")
         model.load_weights("trained_model")
 
     return model
 
-   
+
+
+ 
