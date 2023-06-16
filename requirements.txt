@@ -7,3 +7,4 @@ IPython >= 8.10.0
 tqdm >= 4.64.1 #avazamento, time
 ipdb >= 0.13.13 #metrics
 scipy >= 1.10.0
+tqdm  >= 4.64.1 #iteration progress through a graphical interface
