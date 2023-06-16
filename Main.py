@@ -1,4 +1,16 @@
 def main():
+    
+    """
+    Execute the main logic of the program.
+
+    This function performs the following steps:
+    1. Retrieves data including train, validation, and test datasets, input dimension, latent dimension,
+       label dimension, and labels using the 'get_data' function.
+    2. Trains or loads a model using the retrieved data, specified architectures, and other parameters
+       through the 'train_or_load_model' function.
+    3. Saves samples from a specified age range using the trained model and labels.
+    """
+    
     batch_size = 64
     (
         train_dataset,
