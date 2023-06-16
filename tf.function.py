@@ -187,6 +187,20 @@ def generate_and_save_images(model, epoch, test_sample,input_dim)):
 
     return model
 
+   
+   def plot_reconstrcuted_signal(model, test_dataset, input_dim, num_examples_to_generate):
+    for test_batch in test_dataset.take(1):
+        test_sample = test_batch[0:num_examples_to_generate, :, :]
+
+    reconstructed, *_ = model(
+        test_sample[:, :input_dim, :], test_sample[:, input_dim:, 0]
+    )
+
+    _, ax = plt.subplots(test_sample.shape[0], 2, figsize=(12, 8))
+    for i in range(reconstructed.shape[0]):
+        ax[i, 0].plot(test_sample[i, :input_dim, 0])
+        ax[i, 1].plot(reconstructed[i, :])
+    plt.show()
 
 
  
