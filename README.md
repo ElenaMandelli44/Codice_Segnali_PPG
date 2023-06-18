@@ -67,3 +67,15 @@ after implementing a hyperparameter tuning, these are the parameters that optimi
 | Strides                    | 2            |
 | Learning Rate              | 0.0001       |
 | Optimizer                  | Adam         |
+
+
+# Results 
+
+| parameters                 | values       |
+| -------------------------- | ------------ |
+| Average \rho               | 0.6619       |
+| Median \rho                | 0.6622       |
+| Average MSE                | 0.8676       |
+| Median MSE                 | 0.8831       |
+
+
