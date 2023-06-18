@@ -71,11 +71,12 @@ after implementing a hyperparameter tuning, these are the parameters that optimi
 
 # Results 
 
-| parameters                 | values       |
-| -------------------------- | ------------ |
-| Average &#x03C1            | 0.6619       |
-| Median &#x03C1             | 0.6622       |
-| Average MSE                | 0.8676       |
-| Median MSE                 | 0.8831       |
+| parameters                   | values       |
+| ---------------------------- | ------------ |
+| Average Spearman Coefficient | 0.6619       |
+| Median  Spearman Coefficient | 0.6622       |
+| Average MSE                  | 0.8676       |
+| Median MSE                   | 0.8831       |
+
 
 
