@@ -73,8 +73,8 @@ after implementing a hyperparameter tuning, these are the parameters that optimi
 
 | parameters                 | values       |
 | -------------------------- | ------------ |
-| Average \rho               | 0.6619       |
-| Median \rho                | 0.6622       |
+| Average &#x03C1            | 0.6619       |
+| Median &#x03C1             | 0.6622       |
 | Average MSE                | 0.8676       |
 | Median MSE                 | 0.8831       |
 
