@@ -1,10 +1,3 @@
-#!/usr/bin/env python3
-# -*- coding: utf-8 -*-
-"""
-Created on Tue Jun 13 10:30:48 2023
-
-@author: elenamandelli
-"""
 
 import imageio
 import matplotlib.pyplot as plt
@@ -12,8 +5,6 @@ import numpy as np
 import PIL
 import tensorflow as tf
 import ipdb
-
-# import tensorflow_probability as tfp
 import time
 import pickle
 import pandas as pd
@@ -25,6 +16,24 @@ from scipy.stats import spearmanr
 
 
 def get_data(batch_size):
+    """
+        This script is designed to load and preprocess data for a PPG (Photoplethysmography) project. 
+        It provides a function called get_data that returns the necessary data and parameters for training a model.
+
+        Parameters:
+        - batch_size: The desired batch size for training the model.
+
+        Returns:
+        - train_dataset: TensorFlow dataset containing the training data.
+        - val_dataset: TensorFlow dataset containing the validation data.
+        - test_dataset: TensorFlow dataset containing the test data.
+        - input_dim: Dimension of the input signals.
+        - latent_dim: Dimension of the target labels.
+        - label_dim: Dimension of the target labels.
+        - input_dim: Dimension of the input signals.
+    """
+
+    
     # Definition of working directory
     working_dir = "/Users/elenamandelli/Desktop/PPG_Project/"
 
@@ -54,21 +63,6 @@ def get_data(batch_size):
     test_labels = pd.DataFrame(df["labels"])
     raw_test_labels = pd.DataFrame(df["labels"]).values.astype(np.float32)
 
-    # test_labels_max = raw_test_labels.max(axis=0)
-    # test_labels_min = raw_test_labels.min(axis=0)
-    # test_labels = (raw_test_labels - test_labels_min) / (test_labels_max - test_labels_min)
-    # def get_standardizer(raw_test_labels):
-    #     mean = raw_test_labels.mean(axis=0)
-    #     std = raw_test_labels.std(axis=0)
-    #
-    #     def standardize(x):
-    #         return (x - mean) / std
-    #
-    #     return standardize
-    #
-
-    # standardizer = get_standardizer(raw_test_labels)
-    # standard_test_labels = standardizer(raw_test_labels)
     test = np.asarray([d / np.max(np.abs(d)) for d in df["samples"]])
     test = np.expand_dims(test, axis=-1)
 
@@ -155,15 +149,7 @@ conv_architectures (list): A list of convolutional layer configurations for the 
 """
 
 conv_architectures = [
-    #    [{'filters': 32, 'kernel_size':3, 'strides': 2, 'activation':'relu', 'padding':'valid'},
-    #     {'filters': 64, 'kernel_size':3, 'strides': 2, 'activation':'relu', 'padding':'valid'},
-    #     {'filters': 128, 'kernel_size':3, 'strides': 2, 'activation':'relu', 'padding':'valid'}
-    #    ],
-    #     [{'filters': 32, 'kernel_size':3, 'strides': 2, 'activation':'tanh', 'padding':'valid'},
-    #      {'filters': 64, 'kernel_size':3, 'strides': 2, 'activation':'tanh', 'padding':'valid'},
-    #      {'filters': 128, 'kernel_size':3, 'strides': 2, 'activation':'tanh', 'padding':'valid'}
-    #      ],
-    [
+
         {
             "filters": 64,
             "kernel_size": 3,
@@ -186,21 +172,7 @@ conv_architectures = [
             "padding": "valid",
         },
     ],
-    #   [{'filters': 64, 'kernel_size':3, 'strides': 2, 'activation':'relu', 'padding':'valid'},
-    #     {'filters': 128, 'kernel_size':3, 'strides': 2, 'activation':'relu', 'padding':'valid'},
-    #     {'filters': 256, 'kernel_size':3, 'strides': 2, 'activation':'relu', 'padding':'valid'}
-    #   ],
-    #   [{'filters': 64, 'kernel_size':3, 'strides': 2, 'activation':'tanh', 'padding':'valid'},
-    #    {'filters': 128, 'kernel_size':3, 'strides': 2, 'activation':'tanh', 'padding':'valid'},
-    # ],
-    #  [{'filters': 64, 'kernel_size':3, 'strides': 2, 'activation':'sigmoid', 'padding':'valid'},
-    #    {'filters': 128, 'kernel_size':3, 'strides': 2, 'activation':'sigmoid', 'padding':'valid'},
-    #    {'filters': 256, 'kernel_size':3, 'strides': 2, 'activation':'sigmoid', 'padding':'valid'}
-    #   ],
-    #   [{'filters': 64, 'kernel_size':3, 'strides': 2, 'activation':'elu', 'padding':'valid'},
-    #    {'filters': 128, 'kernel_size':3, 'strides': 2, 'activation':'elu', 'padding':'valid'},
-    #    {'filters': 256, 'kernel_size':3, 'strides': 2, 'activation':'elu', 'padding':'valid'}
-    #   ],
+
 ]
 
 """
@@ -213,17 +185,46 @@ linear_architectures = [
         {"units": 256, "activation": "relu"},
         {"units": 128, "activation": "relu"},
     ],
-    #  [{'units':256, 'activation':'relu'},
-    #   {'units':128, 'activation':'relu'},
-    #   {'units':64, 'activation':'relu'},
-    # ],
-    #  [{'units':128, 'activation':'relu'},
-    #  {'units':64, 'activation':'relu'},
-    # ]
+
 ]
 
 
 class CVAE(tf.keras.Model):
+
+   """
+    Convolutional Variational Autoencoder (CVAE) model.
+
+    This class implements a Convolutional Variational Autoencoder (CVAE) model, which consists of an encoder network,
+    a decoder network, and methods for encoding, decoding, and sampling from the latent space.
+
+    Args:
+        latent_dim (int): The dimensionality of the latent space.
+        label_dim (int): The dimensionality of the label space.
+        conv_architectures (list): A list of convolutional layer configurations for the encoder and decoder networks.
+            Each element in the list should be a tuple containing the keyword arguments for `tf.keras.layers.Conv1D` or
+            `tf.keras.layers.Conv1DTranspose`, depending on the network.
+        linear_architectures (list): A list of dense layer configurations for the encoder and decoder networks.
+            Each element in the list should be a tuple containing the keyword arguments for `tf.keras.layers.Dense`.
+        input_dim (int): The dimensionality of the input signal.
+
+    Attributes:
+        latent_dim (int): The dimensionality of the latent space.
+        label_dim (int): The dimensionality of the label space.
+        input_dim (int): The dimensionality of the input signal.
+        encoder (tf.keras.Sequential): The encoder network of the CVAE model.
+        decoder (tf.keras.Sequential): The decoder network of the CVAE model.
+
+    Methods:
+        call(x, y): Executes the forward pass of the CVAE model given an input x and label y, returning the reconstructed
+            output, latent variables, mean, and log variance.
+        sample(eps=None, labels=None, num_samples=1): Generates samples from the CVAE model by decoding random or
+            specified latent variables and labels.
+        encode(x): Encodes the input x and returns the mean and log variance of the latent space.
+        reparameterize(mean, logvar): Reparameterizes the latent variables using the mean and log variance.
+        decode(z, labels, apply_sigmoid=False): Decodes the latent variables z and labels into reconstructed outputs.
+
+    """
+
     def __init__(
         self, latent_dim, label_dim, conv_architectures, linear_architectures, input_dim
     ):
@@ -248,7 +249,15 @@ class CVAE(tf.keras.Model):
         linear_layers.append(tf.keras.layers.Dense(**linear_settings[0]))
         linear_layers.append(tf.keras.layers.Dense(**linear_settings[1]))
 
-        # ipdb.set_trace()
+        """
+            A sequential model is created, starting with an input layer (tf.keras.layers.InputLayer) that specifies the shape of the input. 
+            The elements of the conv_layers list are then added to the model. 
+           
+            Next, the elements of the linear_layers list are added to the model. 
+            The last layer is a dense layer (tf.keras.layers.Dense) with size latent_dim + latent_dim.
+            This layer returns the mean and log variance of the latent distribution.
+        """
+        
         return tf.keras.Sequential(
             [
                 tf.keras.layers.InputLayer(input_shape=(self.input_dim, 1)),
@@ -257,6 +266,23 @@ class CVAE(tf.keras.Model):
                 tf.keras.layers.Dense(2 * self.latent_dim),
             ]
         )
+
+        """           
+            Decoder network for the convolutional variational autoencoder (CVAE).
+
+            This network takes a sample from the latent distribution, applies a series of transposed convolutional layers
+            followed by dense layers, and outputs a reconstructed input tensor.
+
+            Args:
+                conv_architectures (list): A list of transposed convolutional layer configurations for the decoder network.
+                    Each element in the list should be a tuple containing the keyword arguments for `tf.keras.layers.Conv1D`.
+                linear_architectures (list): A list of dense layer configurations for the decoder network. Each element in
+                    the list should be a tuple containing the keyword arguments for `tf.keras.layers.Dense`.
+
+            Attributes:
+                conv_layers (list): A list of transposed convolutional layers in the decoder network.
+                linear_layers (list): A list of dense layers in the decoder network.
+        """
 
     def build_decoder(self, conv_architectures, linear_architectures):
         conv_layers = []
@@ -271,6 +297,19 @@ class CVAE(tf.keras.Model):
         linear_settings = linear_architectures[-1]
         linear_layers.append(tf.keras.layers.Dense(**linear_settings[1]))
         linear_layers.append(tf.keras.layers.Dense(**linear_settings[0]))
+
+            
+        """   
+              A sequential model is constructed, starting with an input layer (tf.keras.layers.InputLayer) that specifies the input shape. 
+              The elements of the linear_layers list are added to the model.
+              A dense layer is added with the dimension of the final layer in the encoder.
+              A Reshape layer is added to reshape the output to match the computed value in the encoder's output.
+              Then, the elements of the conv_layers list are added to the model.
+              Conv1D layer is then added with just one fileter
+              A Flatten layer is added to flatten the output from the convolutional layers into a 1D vector.
+              A Dense layer is added with 1024 units.
+        
+        """
 
         return tf.keras.Sequential(
             [
@@ -288,12 +327,48 @@ class CVAE(tf.keras.Model):
         )
 
     def call(self, x, y):
+
+        """
+            Forward pass of the CVAE model.
+    
+            Encodes the input x, reparameterizes the latent variables, decodes them with the provided label y,
+            and returns the reconstructed output, latent variables, mean, and log variance.
+    
+            Args:
+                x (tf.Tensor): Input tensor.
+                y (tf.Tensor): Label tensor.
+    
+            Returns:
+                tf.Tensor: Reconstructed output.
+                tf.Tensor: Latent variables.
+                tf.Tensor: Mean of the latent distribution.
+                tf.Tensor: Log variance of the latent distribution.
+        """
+        
+        
         mean, logvar = self.encode(x)
-        z = self.reparameterize(mean, logvar)
-        x_logit = self.decode(z, y)
+        z = self.reparameterize(mean, logvar) #returns the sampled latent variables z.
+        x_logit = self.decode(z, y) #The decode function takes the sampled latent variables z and the conditional information y as input and decodes them to generate the reconstructed output x_logit.
         return x_logit, z, mean, logvar
 
     def sample(self, eps=None, labels=None, num_samples=1):
+
+        
+        """
+            Generates samples from the CVAE model.
+    
+            Generates samples by decoding random or specified latent variables and labels.
+    
+            Args:
+                eps (tf.Tensor, optional): Latent variables. A noise tensor sampled from the latent space.
+                                            If not provided, random samples will be generated.
+                labels (tf.Tensor, optional): A label tensor. If provided, it is combined with the sampled noise to generate the decoded samples.
+                                              If not provided, random labels sampled from a normal distribution are generated.
+                num_samples (int, optional): The number of samples to generate. This value is used only if eps and labels are not provided.
+    
+            Returns:
+                tf.Tensor: Decoded samples.
+        """
         num_samples = (
             eps.shape[0]
             if not eps is None
@@ -313,25 +388,74 @@ class CVAE(tf.keras.Model):
         return self.decode(eps, labels, apply_sigmoid=True)
 
     def encode(self, x):
+
+        """
+            Encodes the input x and returns the mean and log variance of the latent space.
+    
+            Args:
+                x (tf.Tensor): Input tensor.
+    
+            Returns:
+                tf.Tensor: Mean of the latent space.
+                tf.Tensor: Log variance of the latent space.
+        """
+        
         x = self.encoder(x)
         x = x[:, 2 * (x.shape[1] // 2)]
-        # [:, :126]
-        mean, logvar = tf.split(x, num_or_size_splits=2, axis=1)
+        mean, logvar = tf.split(x, num_or_size_splits=2, axis=1) #Division is done to separate this information into two distinct tensors.
         return mean, logvar
 
     def reparameterize(self, mean, logvar):
+
+        """
+            Reparameterizes the latent variables using the mean and log variance.
+    
+            Args:
+                mean (tf.Tensor): Mean of the latent space.
+                logvar (tf.Tensor): Log variance of the latent space.
+    
+            Returns:
+                tf.Tensor: Reparameterized latent variables.
+        """
+                
         eps = tf.random.normal(shape=tf.shape(mean))
-        return eps * tf.exp(logvar * 0.5) + mean
+        return eps * tf.exp(logvar * 0.5) + mean  #Sampling from the latent distribution.
 
     def decode(self, z, labels, apply_sigmoid=False):
+
+        """
+            Decodes the latent variables z and labels into reconstructed outputs.
+    
+            Args:
+                z (tf.Tensor): Latent variables.
+                labels (tf.Tensor): Labels.
+                apply_sigmoid (bool, optional): Whether to apply sigmoid activation to the output. Defaults to False.
+    
+            Returns:
+                tf.Tensor: Reconstructed outputs.
+        """        
         inputs = tf.concat([z, labels], axis=1)
         x = self.decoder(inputs)
         if apply_sigmoid:
             x = tf.sigmoid(x)
         return x
 
+""" LOSS FUNCTION """"
 
 def log_normal_pdf(sample, mean, logvar, raxis=1):
+
+    """
+        Compute the log probability density function of a normal distribution.
+
+        Args:
+            sample (tf.Tensor): Sampled values.
+            mean (tf.Tensor): Mean of the distribution.
+            logvar (tf.Tensor): Log variance of the distribution.
+            raxis (int): Axis to reduce.
+
+        Returns:
+            tf.Tensor: Log probability density function.
+    """    
     log2pi = tf.math.log(2.0 * np.pi)
     return tf.reduce_sum(
         -0.5 * ((sample - mean) ** 2.0 * tf.exp(-logvar) + logvar + log2pi), axis=raxis
@@ -339,31 +463,67 @@ def log_normal_pdf(sample, mean, logvar, raxis=1):
 
 
 def compute_loss(model, x, input_dim):
-    x_x = x[:, :input_dim, :]
-    y = x[:, input_dim:, 0]
-    x = x_x
-    # x_logit = model.decode(z, y)
-    x_logit, z, mean, logvar = model(x, y)
 
-    cross_ent = (x_logit - tf.squeeze(x, -1)) ** 2  # mse(x_logit, x)
-    logpx_z = -tf.reduce_sum(cross_ent, axis=[1])
-    # y_loss = mse(y, mean)
-    # y_loss = tf.reduce_mean(y_loss)
-    logpz = log_normal_pdf(z, 0.0, 0.0)
-    logqz_x = log_normal_pdf(z, mean, logvar)
-    return -tf.reduce_mean(logpx_z + logpz - logqz_x)  # + y_loss
+    """
+        Computes the loss function for the CVAE model.
+
+        Args:
+            model (CVAE): CVAE model.
+            x (tf.Tensor): Input tensor.
+            input_dim (int): Dimensionality of the input signal.
+
+        Returns:
+            tf.Tensor: Loss value.
+    """    
+    x_x = x[:, :input_dim, :] # corresponds to the PPG signal part of the input.
+    y = x[:, input_dim:, 0] # corresponds to the part relating to the labels.
+    x = x_x
+    x_logit, z, mean, logvar = model(x, y) 
+    cross_ent = (x_logit - tf.squeeze(x, -1)) ** 2  # mse(x_logit, x) #MSE between input and output.
+    
+    logpx_z = -tf.reduce_sum(cross_ent, axis=[1]) # Represents the log conditional probability density of the PPG signal.
+    logpz = log_normal_pdf(z, 0.0, 0.0)  # Represents the log of the probability density of the latent vector. Normal Distribution. 
+    logqz_x = log_normal_pdf(z, mean, logvar) # Represents the log of the probability density of the latent vector distribution.
+    return -tf.reduce_mean(logpx_z + logpz - logqz_x)  
 
 
 @tf.function
 def train_step(model, x, optimizer, input_dim):
-    with tf.GradientTape() as tape:
+
+   """  
+   Performs one training step for the CVAE model.
+   Calculate loss, calculate gradients, and apply model weight updates using the optimizer
+
+        Args:
+            model (CVAE): CVAE model to be trained.
+            x (tf.Tensor): Batch of training data.
+            optimizer (tf.keras.optimizers.Optimizer): Optimizer for updating the model weights.
+            input_dim (int): Input dimensionality.
+
+        Returns:
+               loss
+    """    
+    with tf.GradientTape() as tape: # To compute gradients of model weights versus loss.
         loss = compute_loss(model, x, input_dim)
-    gradients = tape.gradient(loss, model.trainable_variables)
-    optimizer.apply_gradients(zip(gradients, model.trainable_variables))
+    gradients = tape.gradient(loss, model.trainable_variables) # To compute the gradients of the loss with respect to the model weights.
+    optimizer.apply_gradients(zip(gradients, model.trainable_variables)) #Update weights model.
     return loss
 
 
 def generate_and_save_images(model, epoch, test_sample, input_dim):
+
+    """  Generates and saves the images generated by the model.
+
+        Args:
+            model (CVAE): Trained CVAE model.
+            epoch (int): Current epoch number.
+            test_sample (tf.Tensor): Test data sample.
+            input_dim (int): Input dimensionality.
+
+        Returns:
+            None
+    """
+
     mean, logvar = model.encode(test_sample[:, :input_dim, :])
     z = model.reparameterize(mean, logvar)
     labels = test_sample[:, input_dim:, 0]
@@ -391,6 +551,27 @@ def train_or_load_model(
     epochs=1,
     num_examples_to_generate=6,
 ):
+
+   """ 
+   Trains or loads a CVAE model.
+
+       Args:
+           latent_dim (int): Dimensionality of the latent space.
+           train_dataset (tf.data.Dataset): Training dataset.
+           test_dataset (tf.data.Dataset): Test dataset.
+           val_dataset (tf.data.Dataset): Validation dataset.
+           label_dim (int): Dimensionality of the label space.
+           conv_architectures (list): List of configurations for the convolutional layers in the encoder/decoder network.
+           linear_architectures (list): List of configurations for the linear layers in the encoder/decoder network.
+           batch_size (int): Batch size.
+           input_dim (int): Dimensionality of the input.
+           epochs (int, optional): Number of training epochs. Default is 1.
+           num_examples_to_generate (int, optional): Number of examples to generate during training. Default is 6.
+
+       Returns:
+           CVAE: Trained CVAE model.
+    """   
+    
     train_log_dir = "logs/"
     model = CVAE(
         latent_dim, label_dim, conv_architectures, linear_architectures, input_dim
@@ -458,6 +639,19 @@ def train_or_load_model(
 
 
 def plot_reconstrcuted_signal(model, test_dataset, input_dim, num_examples_to_generate):
+
+    """
+       Plots the reconstructed signals generated by the CVAE model.
+
+       Args:
+           model (CVAE): Trained CVAE model.
+           test_dataset (tf.data.Dataset): Test dataset.
+           input_dim (int): Dimensionality of the input.
+           num_examples_to_generate (int): Number of examples to generate.
+
+       Returns:
+           None
+    """    
     for test_batch in test_dataset.take(1):
         test_sample = test_batch[0:num_examples_to_generate, :, :]
 
@@ -473,6 +667,20 @@ def plot_reconstrcuted_signal(model, test_dataset, input_dim, num_examples_to_ge
 
 
 def generate_samples_from_age(model, train_labels, age, n):
+
+   """
+       Generates samples from the CVAE model conditioned on a specific age.
+
+       Args:
+           model (CVAE): Trained CVAE model.
+           train_labels (pd.DataFrame): Training labels used to condition the generation.
+           age (int): Target age to condition the generation.
+           n (int): Number of samples to generate.
+
+       Returns:
+           np.ndarray: Generated samples.
+           np.ndarray: Conditioned labels                                            
+    """          
     result_x = []
     result_y = []
     idx = random.randint(0, len(train_labels) - 1)
@@ -486,6 +694,21 @@ def generate_samples_from_age(model, train_labels, age, n):
 
 
 def save_samples_from_age_range(model, train_labels, min_age, max_age, n):
+
+   """
+       Generates and saves samples from a range of ages using the given model.
+
+       Args:
+           model (CVAE): Trained CVAE model used for generating samples.
+           train_labels (pd.DataFrame): DataFrame of training labels.
+           min_age (int): Minimum age value for generating samples (inclusive).
+           max_age (int): Maximum age value for generating samples (exclusive).
+           n (int): Number of samples to generate for each age.
+
+       Returns:
+           None
+   """ 
+    
     X_generate = []
     Z_generate = []
     for age in range(min_age, max_age):  # ,99):
