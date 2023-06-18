@@ -111,7 +111,6 @@ def get_data (batch_size):
 
     # Dimention
     train_size = x_train.shape[0]
-    batch_size = 64
     test_size = x_test.shape[0]
     val_size = x_val.shape[0]
 
