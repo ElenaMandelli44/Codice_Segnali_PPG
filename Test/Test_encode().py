@@ -11,7 +11,7 @@ def test_encode():
     label_dim = 10
     conv_architectures = [64, 128, 256]
     linear_architectures = [256, 128]
-    input_dim = (1024, 1)
+    input_dim = 1024
     cvae = main.CVAE(latent_dim, label_dim, conv_architectures, linear_architectures, input_dim)
 
     # Generate a random input tensor
