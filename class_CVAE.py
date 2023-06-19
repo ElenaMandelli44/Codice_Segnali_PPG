@@ -95,7 +95,7 @@ class CVAE(Model):
 
     """"
    
-    def __init__(self, latent_dim, label_dim, conv_layers_settings, linear_layers_settings, input_dim):
+    def __init__(self,*, latent_dim, label_dim, conv_layers_settings, linear_layers_settings, input_dim):
             super(CVAE, self).__init__()
             self.latent_dim = latent_dim
             self.label_dim = label_dim
