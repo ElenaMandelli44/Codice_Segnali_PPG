@@ -4,6 +4,7 @@ import numpy as np
 import tensorflow as tf
 import pickle
 import pandas as pd
+import os
 
 def get_data (batch_size): 
     
