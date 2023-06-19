@@ -317,7 +317,9 @@ class CVAE(Model):
             Returns:
                 tf.Tensor: Reconstructed outputs.
             """
-            
+
+            if z.shape [-1] == 11:
+                z = z[:,:-1]
             inputs = tf.concat([z, labels], axis=1)
             x = self.decoder(inputs)
             if apply_sigmoid:
