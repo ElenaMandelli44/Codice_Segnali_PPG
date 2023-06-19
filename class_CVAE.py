@@ -100,8 +100,8 @@ class CVAE(Model):
             self.latent_dim = latent_dim
             self.label_dim = label_dim
             self.input_dim = input_dim
-            self.encoder = self.build_encoder(conv_architectures, linear_architectures)
-            self.decoder = self.build_decoder(conv_architectures, linear_architectures)
+            self.encoder = self.build_encoder(conv_layers_settings, linear_layers_settings)
+            self.decoder = self.build_decoder(conv_layers_settings, linear_layers_settings)
             
     def build_encoder(self, conv_architectures, linear_architectures):
             conv_layers = []
