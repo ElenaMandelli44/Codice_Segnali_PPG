@@ -107,8 +107,14 @@ class CVAE(Model):
             conv_layers = []
 
             conv_settings = conv_architectures[0]  
+
             conv_layers.append(tf.keras.layers.Conv1D(**conv_settings[0]))
-            conv_layers.append(tf.keras.layers.Conv1D(**conv_settings[1]))
+            try:
+                conv_layers.append(tf.keras.layers.Conv1D(**conv_settings[1]))
+            except:
+                import ipdb
+
+                ipdb.set_trace()
             conv_layers.append(tf.keras.layers.Conv1D(**conv_settings[2]))
 
 
@@ -157,9 +163,12 @@ class CVAE(Model):
         def build_decoder(self, conv_architectures, linear_architectures):
             conv_layers = []   
                     
-
-            conv_settings = conv_architectures[0]  
-            conv_layers.append(tf.keras.layers.Conv1D(**conv_settings[2]))
+            conv_settings = conv_architectures[0]
+            try:
+                conv_layers.append(tf.keras.layers.Conv1D(**conv_settings[2]))
+            except:
+                import ipdb
+                ipdb.set_trace()
             conv_layers.append(tf.keras.layers.Conv1D(**conv_settings[1]))
             conv_layers.append(tf.keras.layers.Conv1D(**conv_settings[0]))
 
@@ -223,7 +232,8 @@ class CVAE(Model):
             z = self.reparameterize(mean, logvar) #returns the sampled latent variables z.
             x_logit = self.decode(z, y) # #The decode function takes the sampled latent variables z and the conditional information y as input and decodes them to generate the reconstructed output x_logit
             return x_logit, z, mean, logvar
-            def sample(self, eps=None, labels=None):
+            
+
 
         def sample(self, eps=None, labels=None, num_samples=1):
             
