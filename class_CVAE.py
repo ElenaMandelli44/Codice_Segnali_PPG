@@ -301,7 +301,7 @@ class CVAE(Model):
             """
             
             eps = tf.random.normal(shape=tf.shape(mean))
-            return eps * tf.exp(logvar * 0.5) + mean     #Sampling from the latent distribution
+            return (eps * tf.exp(logvar * 0.5) + mean )    #Sampling from the latent distribution
 
 
 
