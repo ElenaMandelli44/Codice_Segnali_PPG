@@ -1,6 +1,6 @@
 
 import tensorflow as tf
-from tensorflow.keras.layers import Input, Conv2D, Flatten, Dense, Reshape, Conv2DTranspose
+from tensorflow.keras.layers import Input, Conv1D, Flatten, Dense, Reshape, Conv1DTranspose
 from tensorflow.keras import Model
 from tensorflow.keras import backend as K
 
