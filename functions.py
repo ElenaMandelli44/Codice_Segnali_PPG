@@ -58,6 +58,8 @@ def compute_loss(model, x, input_dim):
         z, mean, logvar
     )  # Represents the log of the probability density of the latent vector distribution
     return -tf.reduce_mean(logpx_z + logpz - logqz_x)
+
+
 def train_step(model, x, optimizer, input_dim):
    """  
    Performs one training step for the CVAE model.
@@ -77,6 +79,7 @@ def train_step(model, x, optimizer, input_dim):
    gradients = tape.gradient(loss, model.trainable_variables) # To compute the gradients of the loss with respect to the model weights
    optimizer.apply_gradients(zip(gradients, model.trainable_variables)) #Update weights model
    return loss
+
 
 def generate_and_save_images(model, epoch, test_sample,input_dim)):
   """
@@ -172,13 +175,17 @@ def generate_and_save_images(model, epoch, test_sample,input_dim)):
     
     train_log_dir = "logs/"
     model = CVAE(
-           latent_dim, label_dim, conv_architectures, linear_architectures, input_dim
+           latent_dim =latent_dim, 
+           label_dim = label_dim, 
+           conv_architectures = conv_architectures,
+           linear_architectures = linear_architectures,
+           input_dim = input_dim,
          )
 
     num_examples_to_generate = 6
 
     if not os.path.exists("trained_model.index"):
-         writer = tf.summary.create_file_writer(train_log_di
+         writer = tf.summary.create_file_writer(train_log_dir)
          for conv_settings, linear_settings in product(
             conv_architectures, linear_architectures
          ):
