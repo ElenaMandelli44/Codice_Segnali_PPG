@@ -6,6 +6,7 @@ import numpy as np
 from tensorflow import keras
 import random
 import tensorflow as tf
+import class_CVAE import CVAE
 
 def test_build_encoder():
     """
@@ -35,7 +36,14 @@ def test_build_encoder():
     input_dim = 1024
 
     # Create an instance of CVAE
-    cvae = main.CVAE(latent_dim, label_dim, conv_architectures, linear_architectures, input_dim)
+    cvae = CVAE(
+        latent_dim=latent_dim,
+        label_dim=label_dim,
+        conv_layers_settings=conv_architectures,
+        linear_layers_settings=linear_architectures,
+        input_dim=input_dim,
+    )
+
 
     # Call the build_encoder method
     encoder = cvae.build_encoder(conv_architectures, linear_architectures)
