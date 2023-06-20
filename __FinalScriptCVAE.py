@@ -69,7 +69,9 @@ def get_data(batch_size):
 
     # Definition of data for training, validation, and testing.
 
-    """  Due to the large number of files, it was decided to work om a reduced number of signlas """
+    """  
+    Due to the large number of files, it was decided to work om a reduced number of signlas 
+    """
 
     x_train = train[::100]
     x_test = test[::100]
@@ -192,7 +194,7 @@ linear_architectures = [
 
 
 
-""" LOSS FUNCTION """"
+"""  LOSS FUNCTION  """"
 
 def log_normal_pdf(sample, mean, logvar, raxis=1):
 
