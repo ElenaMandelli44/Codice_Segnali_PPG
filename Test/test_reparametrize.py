@@ -7,12 +7,11 @@ def test_reparameterize():
     """
     Test the reparameterize method of the CVAE class in the main module
     """
-    # Create an instance of CVAE
+    # Define the input parameters for CVAE initialization
     latent_dim = 10
     label_dim = 10
-    conv_architectures = [64, 128, 256]
-    linear_architectures = [256, 128]
-    input_dim = (1024, 1)
+    input_dim = 1024
+    
     cvae = main.CVAE(latent_dim, label_dim, conv_architectures, linear_architectures, input_dim)
 
     # Generate random mean and logvar tensors
@@ -34,4 +33,4 @@ def test_reparameterize():
 test_reparameterize()
 
 
-
+    
