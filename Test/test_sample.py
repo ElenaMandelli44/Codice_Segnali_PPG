@@ -5,6 +5,9 @@ import ipdb
 import numpy as np
 from tensorflow import keras
 import random
+from class_CVAE import CVAE, conv_architectures, linear_architectures
+import tensorflow as tf
+
 
 def test_sample():
     """
@@ -31,3 +34,6 @@ def test_sample():
 
 # Run the test function
 test_sample()
+
+
+
