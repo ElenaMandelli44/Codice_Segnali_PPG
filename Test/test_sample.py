@@ -19,12 +19,13 @@ def test_sample():
     input_dim = 1024
     
     # Create an instance of CVAE
-    latent_dim = 10
-    label_dim = 10
-    conv_architectures = [64, 128, 256]
-    linear_architectures = [256, 128]
-    input_dim = 1024
-    cvae = main.CVAE(latent_dim, label_dim, conv_architectures, linear_architectures, input_dim)
+    cvae = CVAE(
+        latent_dim=latent_dim,
+        label_dim=label_dim,
+        conv_layers_settings=conv_architectures,
+        linear_layers_settings=linear_architectures,
+        input_dim=input_dim,
+    )
 
     # Set the input parameters for the sample method
     eps = tf.random.normal(shape=(5, latent_dim))
@@ -39,6 +40,9 @@ def test_sample():
 
 # Run the test function
 test_sample()
+
+
+
 
 
 
