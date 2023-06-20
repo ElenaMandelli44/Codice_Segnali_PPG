@@ -5,6 +5,7 @@ import ipdb
 import numpy as np
 from tensorflow import keras
 import random
+from class_CVAE import CVAE, linear_architectures, conv_architectures
 
 def test_CVAE_init():
     """
