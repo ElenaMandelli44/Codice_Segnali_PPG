@@ -18,8 +18,19 @@ def test_generate_samples_from_age():
     age = 30
     n = 5
 
+    # Define the input parameters for CVAE initialization
+    latent_dim = 10
+    label_dim = 10
+    input_dim = 1024
+
     # Create an instance of CVAE
-    cvae = CVAE()
+    cvae = CVAE(
+        latent_dim=latent_dim,
+        label_dim=label_dim,
+        conv_layers_settings=conv_architectures,
+        linear_layers_settings=linear_architectures,
+        input_dim=input_dim,
+    )
 
     # Call the generate_samples_from_age function
     result_x, result_y = main.generate_samples_from_age(cvae, train_labels, age, n)
