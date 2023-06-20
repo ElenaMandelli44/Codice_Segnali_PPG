@@ -8,6 +8,11 @@ def test_train_step():
     """
     Test the train_step function in the main module
     """
+    # Define the input parameters for CVAE initialization
+    latent_dim = 10
+    label_dim = 10
+    input_dim = 1024
+    
     # Create an instance of CVAE
     cvae = CVAE(latent_dim=10, label_dim=10, conv_architectures=[], linear_architectures=[], input_dim=10)
 
@@ -27,6 +32,7 @@ def test_train_step():
 
 # Run the test function
 test_train_step()
+
 
 
 
