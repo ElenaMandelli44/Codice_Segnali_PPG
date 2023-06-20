@@ -2,7 +2,11 @@ import main
 import numpy as np
 import tensorflow as tf
 import random
+import pandas as pd
 import pickle
+from generate_signals import generate_samples_from_age
+from class_CVAE import CVAE, conv_architectures, linear_architectures
+
 
 def test_generate_samples_from_age():
     """
@@ -61,4 +65,7 @@ def test_save_samples_from_age_range():
 # Run the test functions
 test_generate_samples_from_age()
 test_save_samples_from_age_range()
+
+
+
 
