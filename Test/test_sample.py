@@ -13,6 +13,11 @@ def test_sample():
     """
     Test the sample method of the CVAE class in the main module
     """
+    # Define the input parameters for CVAE initialization
+    latent_dim = 10
+    label_dim = 10
+    input_dim = 1024
+    
     # Create an instance of CVAE
     latent_dim = 10
     label_dim = 10
@@ -34,6 +39,10 @@ def test_sample():
 
 # Run the test function
 test_sample()
+
+
+
+
 
 
 
