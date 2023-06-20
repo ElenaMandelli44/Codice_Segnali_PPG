@@ -27,19 +27,7 @@ def test_compute_loss():
     Test the compute_loss function in the main module
     """
     # Create an instance of CVAE
-    class CVAE:
-        def __init__(self):
-            self.input_dim = 10
-            self.label_dim = 5
 
-        def __call__(self, x, y):
-            x_logit = tf.random.normal(shape=(x.shape[0], self.input_dim, 1))
-            z = tf.random.normal(shape=(x.shape[0], self.label_dim))
-            mean = tf.random.normal(shape=(x.shape[0], self.label_dim))
-            logvar = tf.random.normal(shape=(x.shape[0], self.label_dim))
-            return x_logit, z, mean, logvar
-
-    cvae = CVAE()
 
     # Generate random input tensor
     batch_size = 32
@@ -55,6 +43,8 @@ def test_compute_loss():
 # Run the test functions
 test_log_normal_pdf()
 test_compute_loss()
+
+
 
 
 
