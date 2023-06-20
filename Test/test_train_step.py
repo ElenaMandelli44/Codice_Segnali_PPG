@@ -1,6 +1,8 @@
 import main
 import numpy as np
 import tensorflow as tf
+from functions import train_step
+from class_CVAE import CVAE, conv_architectures, linear_architectures
 
 def test_train_step():
     """
@@ -25,3 +27,6 @@ def test_train_step():
 
 # Run the test function
 test_train_step()
+
+
+
