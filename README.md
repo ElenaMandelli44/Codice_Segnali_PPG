@@ -59,7 +59,7 @@ after implementing a hyperparameter tuning, these are the parameters that optimi
 | parameters                 | values       |
 | -------------------------- | ------------ |
 | Number of layers encoder   | 7            |
-| Number of layers decoder   | 12           |
+| Number of layers decoder   | 10           |
 | Numbers of filters         | 64-128-256   |
 | Activation function        | Tanh         |
 | Padding                    | Valid        |
