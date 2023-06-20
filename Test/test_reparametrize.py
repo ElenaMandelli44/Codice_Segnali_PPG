@@ -1,6 +1,7 @@
 import main
 import numpy as np
 import tensorflow as tf
+from class_CVAE import CVAE, conv_architectures, linear_architectures
 
 def test_reparameterize():
     """
@@ -31,4 +32,6 @@ def test_reparameterize():
 
 # Run the test function
 test_reparameterize()
+
+
 
