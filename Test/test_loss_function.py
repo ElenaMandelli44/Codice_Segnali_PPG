@@ -1,6 +1,8 @@
 import main
 import numpy as np
 import tensorflow as tf
+from functions import log_normal_pdf, compute_loss
+from class_CVAE import CVAE, conv_architectures, linear_architectures
 
 def test_log_normal_pdf():
     """
@@ -53,4 +55,9 @@ def test_compute_loss():
 # Run the test functions
 test_log_normal_pdf()
 test_compute_loss()
+
+
+
+
+
 
