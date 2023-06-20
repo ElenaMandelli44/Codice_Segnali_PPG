@@ -12,11 +12,6 @@ def test_generate_samples_from_age():
     """
     Test the generate_samples_from_age function in the main module
     """
-    # Create an instance of CVAE
-    class CVAE:
-        def __init__(self):
-            self.latent_dim = 10
-            self.label_dim = 10
 
     # Generate random train_labels and age
     train_labels = pd.DataFrame(np.random.randn(10, 10))
@@ -68,4 +63,8 @@ test_save_samples_from_age_range()
 
 
 
+
+
+
+ 
 
