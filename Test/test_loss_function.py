@@ -8,6 +8,21 @@ def test_log_normal_pdf():
     """
     Test the log_normal_pdf function in the main module
     """
+    # Define the input parameters for CVAE initialization
+    latent_dim = 10
+    label_dim = 10
+    input_dim = 1024
+
+    # Create an instance of CVAE
+    cvae = CVAE(
+        latent_dim=latent_dim,
+        label_dim=label_dim,
+        conv_layers_settings=conv_architectures,
+        linear_layers_settings=linear_architectures,
+        input_dim=input_dim,
+    )
+
+    
     # Generate random input tensors
     batch_size = 32
     sample = tf.random.normal(shape=(batch_size, 10))
