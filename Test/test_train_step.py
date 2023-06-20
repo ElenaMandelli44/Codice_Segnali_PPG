@@ -14,7 +14,12 @@ def test_train_step():
     input_dim = 1024
     
     # Create an instance of CVAE
-    cvae = CVAE(latent_dim=10, label_dim=10, conv_architectures=[], linear_architectures=[], input_dim=10)
+    cvae = CVAE(
+        latent_dim = latent_dim,
+        label_dim = label_dim,
+        conv_layers_settings = conv_architectures, 
+        linear_architectures= linear_architectures, 
+        input_dim= input_dim)
 
     # Generate random input tensor
     batch_size = 64
@@ -32,7 +37,5 @@ def test_train_step():
 
 # Run the test function
 test_train_step()
-
-
 
 
