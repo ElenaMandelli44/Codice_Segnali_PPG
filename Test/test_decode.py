@@ -7,14 +7,19 @@ def test_decode():
     """
     Test the decode method of the CVAE class in the main module
     """
-    # Create an instance of CVAE
+    # Define the input parameters for CVAE initialization
     latent_dim = 10
     label_dim = 10
-    conv_architectures = [64, 128, 256]
-    linear_architectures = [256, 128]
     input_dim = 1024
-    cvae = main.CVAE(latent_dim, label_dim, conv_architectures, linear_architectures, input_dim)
 
+    # Create an instance of CVAE
+    cvae = CVAE(
+        latent_dim=latent_dim,
+        label_dim=label_dim,
+        conv_layers_settings=conv_architectures,
+        linear_layers_settings=linear_architectures,
+        input_dim=input_dim,
+    )
 
     # Generate random input tensors
     batch_size = 32
