@@ -1,7 +1,7 @@
 import main
 import numpy as np
 import tensorflow as tf
-
+from class_CVAE import CVAE, linear_architectures, conv_architectures
 
 def test_decode():
     """
