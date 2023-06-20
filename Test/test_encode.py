@@ -1,6 +1,7 @@
 import main
 import numpy as np
 import tensorflow as tf
+import class_CVAE import CVAE, conv_architectures,linear_architectures
 
 def test_encode():
     """
