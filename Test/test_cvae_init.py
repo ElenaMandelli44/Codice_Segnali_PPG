@@ -14,13 +14,17 @@ def test_CVAE_init():
     # Define the input parameters for CVAE initialization
     latent_dim = 10
     label_dim = 10
-    conv_architectures = [64, 128, 256]
-    linear_architectures = [256, 128]
     input_dim = 1024
 
     # Create an instance of CVAE
-    cvae = main.CVAE(latent_dim, label_dim, conv_architectures, linear_architectures, input_dim)
-
+    cvae = CVAE(
+        latent_dim=latent_dim,
+        label_dim=label_dim,
+        conv_layers_settings=conv_architectures,
+        linear_layers_settings=linear_architectures,
+        input_dim=input_dim,
+    )
+    
     # Check if the attributes are correctly set
     assert cvae.latent_dim == latent_dim
     assert cvae.label_dim == label_dim
