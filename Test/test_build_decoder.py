@@ -36,7 +36,13 @@ def test_build_decoder():
     input_dim = 1024
 
     # Create an instance of CVAE
-    cvae = main.CVAE(latent_dim, label_dim, conv_architectures, linear_architectures, input_dim)
+    cvae = CVAE(
+        latent_dim=latent_dim,
+        label_dim=label_dim,
+        conv_layers_settings=conv_architectures,
+        linear_layers_settings=linear_architectures,
+        input_dim=input_dim,
+    )
 
     # Call the build_decoder method
     decoder = cvae.build_decoder(conv_architectures, linear_architectures)
