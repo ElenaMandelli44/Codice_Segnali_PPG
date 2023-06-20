@@ -12,7 +12,14 @@ def test_reparameterize():
     label_dim = 10
     input_dim = 1024
     
-    cvae = main.CVAE(latent_dim, label_dim, conv_architectures, linear_architectures, input_dim)
+    # Create an instance of CVAE
+    cvae = CVAE(
+        latent_dim=latent_dim,
+        label_dim=label_dim,
+        conv_layers_settings=conv_architectures,
+        linear_layers_settings=linear_architectures,
+        input_dim=input_dim,
+    )
 
     # Generate random mean and logvar tensors
     batch_size = 64
@@ -31,6 +38,7 @@ def test_reparameterize():
 
 # Run the test function
 test_reparameterize()
+
 
 
     
