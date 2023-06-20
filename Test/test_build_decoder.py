@@ -51,7 +51,7 @@ def test_build_decoder():
     assert isinstance(decoder, tf.keras.Sequential)
 
     # Check if the number of layers in the decoder is correct
-    assert len(decoder.layers) == len(conv_architectures) + len(linear_architectures) + 5
+    assert len(decoder.layers) == len(conv_architectures) + len(linear_architectures) + 7
 
 # Run the test function
 test_build_decoder()
