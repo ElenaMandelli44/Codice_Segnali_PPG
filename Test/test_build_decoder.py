@@ -6,6 +6,7 @@ import numpy as np
 from tensorflow import keras
 import random
 import tensorflow as tf
+from class_CVAE import CVAE
 
 def test_build_decoder():
     """
