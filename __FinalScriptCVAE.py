@@ -176,7 +176,7 @@ conv_architectures = [
         },
     ],
 
-]
+
 
 """
 linear_architectures (list): A list of dense layer configurations for the decoder network. Each element in the list should
@@ -194,7 +194,7 @@ linear_architectures = [
 
 
 
-"""  LOSS FUNCTION  """"
+"""  LOSS FUNCTION  """
 
 def log_normal_pdf(sample, mean, logvar, raxis=1):
 
