@@ -60,7 +60,7 @@ from tensorflow.keras import backend as K
 
 class CVAE(Model):
     
-    """"
+    """
     This class implements a convolutional variational autoencoder (CVAE) model. The encoder network takes an input tensor,
     applies a series of convolutional layers followed by dense layers, and outputs the mean and log variance of the latent
     distribution. The decoder network then takes a sampled latent variable and reconstructs the original input.
@@ -93,7 +93,7 @@ class CVAE(Model):
         reparameterize(mean, logvar): Reparameterizes the latent variables using the mean and log variance.
         decode(z, labels, apply_sigmoid=False): Decodes the latent variables z and labels into reconstructed outputs.
 
-    """"
+    """
    
     def __init__(self,*, latent_dim, label_dim, conv_layers_settings, linear_layers_settings, input_dim):
             super(CVAE, self).__init__()
