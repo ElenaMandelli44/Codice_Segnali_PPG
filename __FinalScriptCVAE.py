@@ -174,7 +174,7 @@ conv_architectures = [
             "activation": "tanh",
             "padding": "valid",
         },
-    ],
+    ]
 
 
 
