@@ -3,7 +3,7 @@ import tensorflow as tf
 from tensorflow.keras.layers import Input, Conv1D, Flatten, Dense, Reshape, Conv1DTranspose
 from tensorflow.keras import Model
 from tensorflow.keras import backend as K
-from configuration_file import  import conv_architectures, linear_architectures
+from configuration_file import conv_architectures, linear_architectures
 
 
 class CVAE(Model):
