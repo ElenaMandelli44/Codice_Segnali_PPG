@@ -54,5 +54,14 @@ def test_build_encoder():
     # Check if the number of layers in the encoder is correct
     assert len(encoder.layers) == len(conv_architectures) + len(linear_architectures) + 4
 
+    # Check the input shape of the encoder
+    assert encoder.input_shape == (None, cvae.input_dim, 1)
+
+    # Check the output shape of the encoder
+    assert encoder.output_shape == (None, 2 * cvae.latent_dim)
+
+
+
+
 # Run the test function
 test_build_encoder()
