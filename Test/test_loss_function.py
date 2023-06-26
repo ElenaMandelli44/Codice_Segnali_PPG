@@ -8,11 +8,31 @@ def test_log_normal_pdf():
     """
     Test the log_normal_pdf function in the main module
     """
+    #First Test
+    
+    # Define the input tensors (direct)
+    sample = tf.constant([[1.0, 2.0, 3.0], [4.0, 5.0, 6.0]])
+    mean = tf.constant([[0.0, 0.0, 0.0], [1.0, 1.0, 1.0]])
+    logvar = tf.constant([[0.0, 0.0, 0.0], [0.5, 0.5, 0.5]])
+
+    # Call the log_normal_pdf function
+    result = main.log_normal_pdf(sample, mean, logvar)
+
+    # Check if the result has the correct shape
+    assert result.shape == (2,)
+
+    # Check the values of the result
+    expected_result = np.array([-3.081085, -9.150937])
+    np.testing.assert_allclose(result.numpy(), expected_result, rtol=1e-6)
+
+    #Second Test (indirect)
+    
     # Define the input parameters for CVAE initialization
     latent_dim = 10
     label_dim = 10
     input_dim = 1024
-
+    tf.random.set_seed(42)
+    
     # Create an instance of CVAE
     cvae = CVAE(
         latent_dim=latent_dim,
@@ -24,7 +44,7 @@ def test_log_normal_pdf():
 
     
     # Generate random input tensors
-    batch_size = 32
+    batch_size = 64
     sample = tf.random.normal(shape=(batch_size, 10))
     mean = tf.random.normal(shape=(batch_size, 10))
     logvar = tf.random.normal(shape=(batch_size, 10))
