@@ -15,6 +15,7 @@ def test_generate_samples_from_age():
 
     # Generate random train_labels and age
     train_labels = pd.DataFrame(np.random.randn(10, 10))
+    
     # Test case 1: age = 30, n = 5
     age = 30
     n = 5
@@ -22,8 +23,6 @@ def test_generate_samples_from_age():
     # Define the input parameters for CVAE initialization
     latent_dim = 10
     label_dim = 10
-    # conv_architectures = [64, 128, 256]
-    # linear_architectures = [256, 128]
     input_dim = 1024
 
     # Create an instance of CVAE
@@ -38,9 +37,17 @@ def test_generate_samples_from_age():
     # Call the generate_samples_from_age function
     result_x, result_y = generate_samples_from_age(cvae, train_labels, age, n)
 
-    # Check the shapes of the generated samples
-    assert result_x.shape == (n, cvae.input_dim)
-    assert result_y.shape == (n, cvae.label_dim + 1)
+    # Check if the generated samples have the correct age value
+    for i in range(n):
+        generated_age = result_y[i, :][-1]  # Extract the last element of the label as the age
+        assert generated_age == age
+
+    # Check if the generated samples are different
+    assert not np.all(result_x[0] == result_x[1])  # Check if any two samples are identical
+
+    # Check if the generated samples are valid predictions
+    predictions = cvae.decode(tf.convert_to_tensor(result_x, dtype=tf.float32))
+    assert predictions.shape == (n, cvae.input_dim, 1)
 
     # Test case 2: age = 40, n = 3
     age = 40
@@ -49,9 +56,17 @@ def test_generate_samples_from_age():
     # Call the generate_samples_from_age function again
     result_x, result_y = generate_samples_from_age(cvae, train_labels, age, n)
 
-    # Check the shapes of the generated samples
-    assert result_x.shape == (n, cvae.input_dim)
-    assert result_y.shape == (n, cvae.label_dim + 1)
+    # Check if the generated samples have the correct age value
+    for i in range(n):
+        generated_age = result_y[i, :][-1]  # Extract the last element of the label as the age
+        assert generated_age == age
+
+    # Check if the generated samples are different
+    assert not np.all(result_x[0] == result_x[1])  # Check if any two samples are identical
+
+    # Check if the generated samples are valid predictions
+    predictions = cvae.decode(tf.convert_to_tensor(result_x, dtype=tf.float32))
+    assert predictions.shape == (n, cvae.input_dim, 1)
 
 
 # Run the test function
