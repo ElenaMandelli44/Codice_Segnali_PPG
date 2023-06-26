@@ -73,6 +73,9 @@ def test_compute_loss():
 
     # Test case 1:Generate random input tensor
     batch_size = 64
+    # Set the random seed
+    tf.random.set_seed(42)
+    
     x = tf.random.normal(shape=(batch_size, cvae.input_dim + cvae.label_dim, 1))
 
     # Call the compute_loss function
