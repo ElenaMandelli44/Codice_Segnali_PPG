@@ -210,7 +210,24 @@ class CVAE(Model):
             )
             return self.decode(eps, labels, apply_sigmoid=True) # apply_sigmoid=True It is useful to apply sigmoid to get a final output that looks like a probability distribution
 
+        def make_mean_and_logvar(self, x):
+        """
+        Extracts the mean and log variance from the encoded tensor x.
+        create an array divisible by two to generate mean and logvar
+    
+        Args:
+            x (tf.Tensor): Encoded tensor.
+    
+        Returns:
+            tf.Tensor: Mean of the latent space.
+            tf.Tensor: Log variance of the latent space.
+        """
+            x = x[:, 2 * (x.shape[1] // 2)]
+            mean, logvar = tf.split(x, num_or_size_splits=2, axis=1)
+            return mean, logvar
 
+
+        
         def encode(self, x):
             
             """Encodes the input x and returns the mean and log variance of the latent space.
@@ -224,8 +241,7 @@ class CVAE(Model):
             """
             
             x = self.encoder(x)
-            x = x[:, 2 * (x.shape[1] // 2)]
-            mean, logvar = tf.split(x, num_or_size_splits=2, axis=1) #Division is done to separate this information into two distinct tensors
+            mean, logvar = self.make_mean_and_logvar(x)
             return mean, logvar
 
 
