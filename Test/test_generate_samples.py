@@ -6,8 +6,27 @@ from configuration_file import conv_architectures, linear_architectures
 
 def test_generate_samples():
     """
-    Test the generate_samples function in the main module
+    Test function for the generate_samples function in the main module.
+
+    This function tests the functionality of the generate_samples function by:
+        - Defining the input parameters for CVAE initialization.
+        - Creating an instance of CVAE.
+        - Generating a random input tensor.
+        - Testing two test cases:
+            - Test case 1:
+                - Setting the random seed.
+                - Calling the generate_samples function with the defined input tensors and n = 5.
+                - Checking the shape of the generated samples.
+                - Checking if the generated samples are valid predictions.
+            - Test case 2:
+                - Setting n = 1.
+                - Calling the generate_samples function with the defined input tensors and n = 1.
+                - Checking the shape of the generated samples.
+
+    Raises:
+        AssertionError: If any of the assertions fail.
     """
+
     # Define the input parameters for CVAE initialization
     latent_dim = 10
     label_dim = 10
