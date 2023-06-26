@@ -23,11 +23,13 @@ def test_generate_samples():
     )
 
     # Generate random input tensor
-    batch_size = 32
+    batch_size = 64
     sample = tf.random.normal(shape=(batch_size, input_dim + label_dim, 1))
     n = 5
 
-    # Call the generate_samples function
+    #Test case 1: Call the generate_samples function
+    # Set the random seed
+    tf.random.set_seed(42)
     result_x, result_y = main.generate_samples(cvae, sample, n, input_dim)
 
     # Check if the generated samples have the correct shapes
@@ -39,6 +41,18 @@ def test_generate_samples():
     # Check if the generated samples are valid predictions
     predictions = cvae.decode(tf.convert_to_tensor(result_x, dtype=tf.float32))
     assert predictions.shape == expected_shape_x
+
+
+    # Test case 2: n = 1
+    n = 1
+    result_x, result_y = main.generate_samples(cvae, sample, n, input_dim)
+
+    # Check if the generated samples have the correct shapes
+    expected_shape_x = (n, input_dim, 1)
+    expected_shape_y = (n, latent_dim)
+    assert result_x.shape == expected_shape_x
+    assert result_y.shape == expected_shape_y
+
 
 # Run the test function
 test_generate_samples()
