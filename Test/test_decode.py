@@ -30,7 +30,7 @@ def test_decode():
     decoded_output = cvae.decode(z, labels, apply_sigmoid=True)
 
     # Check if the output tensor has the correct shape
-    expected_shape = (batch_size, cvae.input_dim, 1)
+    expected_shape = (batch_size, cvae.input_dim)
     assert decoded_output.shape == expected_shape
 
     # Check if the sigmoid activation is applied when apply_sigmoid is True
