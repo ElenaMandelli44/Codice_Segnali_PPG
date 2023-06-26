@@ -21,6 +21,15 @@ To install the prerequisites type:
 pip install -r ./requirements.txt
 ```
 
+## Files description
+
+1) main.py -> This file is the main script that executes the program logic.
+2) preprocessing.py -> This file contains several useful functions for loading and preparing data.
+3) configuration_file.py -> Defines two lists, conv_architectures and linear_architectures, which represent the layer configurations for the encoder and decoder networks, respectively.
+4) class_cvae.py ->  Class implementation of a Convolutional Variational Autoencoder (CVAE) in TensorFlow
+5) functions.py -> Includes various functions and a training loop for a Convolutional Variational Autoencoder (CVAE) model.
+6) generate_signals.py -> Defines two functions related to generating and saving samples from a trained CVAE model based on a specific age or a range of ages. 
+
 
 ## Overview on PPG signals
 
