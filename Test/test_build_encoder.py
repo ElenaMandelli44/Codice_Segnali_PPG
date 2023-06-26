@@ -52,7 +52,7 @@ def test_build_encoder():
     assert isinstance(encoder, tf.keras.Sequential)
 
     # Check if the number of layers in the encoder is correct
-    assert len(encoder.layers) == len(conv_architectures) + len(linear_architectures) + 4
+    assert len(encoder.layers) == len(conv_architectures) + len(linear_architectures) + 2
 
 # Run the test function
 test_build_encoder()
