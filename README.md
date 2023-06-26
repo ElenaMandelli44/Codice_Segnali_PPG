@@ -7,6 +7,21 @@ Once the neural network was trained, synthetic signals were generated based on s
 ## Prerequisites
 The project is coded in Python and makes use of popular scientific packages like numpy, pandas, matplotlib, sklearn, and more. Therefore, it is highly recommended to install Anaconda for smooth execution.
 
+
+## Python Installation
+
+First of all ensure that a right Python version is installed (Python >= 3.6 is required).
+The [Anaconda/Miniconda](https://www.anaconda.com/) python version is recomended.
+
+### Installing prerequisites
+
+To install the prerequisites type:
+
+```
+pip install -r ./requirements.txt
+```
+
+
 ## Overview on PPG signals
 
 PPG (photoplethysmography) signals are a noninvasive monitoring technique used to measure changes in blood volume in subcutaneous vascular structures. For this purpose, a so-called pulse oximeter is used, which is usually attached to a part of the body where blood vessels are close to the surface, such as the finger or the ear. In our case, the device is attached to the finger.
