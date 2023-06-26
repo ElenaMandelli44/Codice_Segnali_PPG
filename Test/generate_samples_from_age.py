@@ -11,9 +11,29 @@ from configuration_file import conv_architectures, linear_architectures
 
 def test_generate_samples_from_age():
     """
-    Test the generate_samples_from_age function in the main module
-    """
+    Test function for the generate_samples_from_age function in the main module.
 
+    This function tests the functionality of the generate_samples_from_age function by:
+        - Generating random train_labels and age.
+        - Testing two test cases:
+            - Test case 1:
+                - Setting age = 30 and n = 5.
+                - Defining the input parameters for CVAE initialization.
+                - Creating an instance of CVAE.
+                - Calling the generate_samples_from_age function.
+                - Checking if the generated samples have the correct age value.
+                - Checking if the generated samples are different.
+                - Checking if the generated samples are valid predictions.
+            - Test case 2:
+                - Setting age = 40 and n = 3.
+                - Calling the generate_samples_from_age function again.
+                - Checking if the generated samples have the correct age value.
+                - Checking if the generated samples are different.
+                - Checking if the generated samples are valid predictions.
+
+    Raises:
+        AssertionError: If any of the assertions fail.
+    """
     # Generate random train_labels and age
     train_labels = pd.DataFrame(np.random.randn(10, 10))
     
