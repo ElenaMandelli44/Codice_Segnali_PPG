@@ -1,119 +1,118 @@
-
-
 import numpy as np
 import tensorflow as tf
 import pickle
 import pandas as pd
 import os
 
-def get_data (batch_size): 
-    
+def load_data(file_path):
     """
-    This script is designed to load and preprocess data for a PPG (Photoplethysmography) project. 
-    It provides a function called get_data that returns the necessary data and parameters for training a model.
+    Load data from a pickle file specified by the file path.
     
     Parameters:
-    - batch_size: The desired batch size for training the model.
+        - file_path: Full path of the pickle file containing the data to load.
+    
+    Returns:
+        A tuple containing:
+        - labels: Pandas DataFrame containing the data labels.
+        - samples: NumPy array representing the preprocessed data samples.
+    """
+    with open(file_path, "rb") as file:
+        df = pickle.load(file)
+    labels = pd.DataFrame(df["labels"])
+    samples = np.asarray([d/np.max(np.abs(d)) for d in df["samples"]])
+    samples = np.expand_dims(samples, axis=-1)
+    return labels, samples
+
+def combine_data(labels, samples):
+    """
+    Combine labels and samples to create a single dataset.
+
+    Parameters:
+        - labels: NumPy array or Pandas DataFrame representing the data labels.
+        - samples: NumPy array representing the data samples.
 
     Returns:
-    - train_dataset: TensorFlow dataset containing the training data.
-    - val_dataset: TensorFlow dataset containing the validation data.
-    - test_dataset: TensorFlow dataset containing the test data.
-    - input_dim: Dimension of the input signals.
-    - latent_dim: Dimension of the target labels.
-    - label_dim: Dimension of the target labels.
+        A NumPy array representing the combined dataset, where labels are appended to the samples.
     """
+    labels = np.expand_dims(labels, axis=-1)
+    combined_data = np.hstack([samples, labels])
+    return combined_data
 
+def convert_to_tensor(*arrays):
+    """
+    Convert input arrays to TensorFlow tensors with dtype=tf.float32.
 
-    # Definition of working directory
-    working_dir = "/Users/elenamandelli/Desktop/PPG_Project/"
+    Parameters:
+        - *arrays: Variable number of arrays to be converted to tensors.
 
-    # Loading training data
-    with open(working_dir + "train_db_1p.pickle", "rb") as file:
-        df = pickle.load(file)
+    Returns:
+        A list of TensorFlow tensors with dtype=tf.float32 representing the converted arrays.
+    """
+    return [tf.convert_to_tensor(arr, dtype=tf.float32) for arr in arrays]
 
-    train_labels = pd.DataFrame(df["labels"])
-    train = np.asarray([d/np.max(np.abs(d)) for d in df["samples"]])
-    train = np.expand_dims(train, axis=-1)
+def create_dataset(data, batch_size, shuffle=True):
+    """
+    Create a TensorFlow dataset from input data.
 
-    # Loading validation data 
-    with open(working_dir + "validation_db_1p.pickle", "rb") as file:
-        df = pickle.load(file)
+    Parameters:
+        - data: NumPy array or TensorFlow tensor representing the input data.
+        - batch_size: The desired batch size for the created dataset.
+        - shuffle: (Optional) Boolean indicating whether to shuffle the data. Default is True.
 
-    validation_labels = pd.DataFrame(df["labels"])
-    validation = np.asarray([d/np.max(np.abs(d)) for d in df["samples"]])
-    validation = np.expand_dims(validation, axis=-1)
+    Returns:
+        A TensorFlow dataset object created from the input data, with batches of size batch_size.
+    """
+    dataset = tf.data.Dataset.from_tensor_slices(data)
+    if shuffle:
+        dataset = dataset.shuffle(data.shape[0])
+    dataset = dataset.batch(batch_size, drop_remainder=True)
+    return dataset
 
-    # Loading test data
-    with open(working_dir + "test_db_1p.pickle", "rb") as file:
-        df = pickle.load(file)
+def get_data(batch_size, sampling_rate=100, working_dir=None):
+    """
+    Load and preprocess data from pickle files and create TensorFlow datasets.
 
-    test_labels = pd.DataFrame(df["labels"])
-    test = np.asarray([d/np.max(np.abs(d)) for d in df["samples"]])
-    test = np.expand_dims(test, axis=-1)
+    Parameters:
+        - batch_size: The desired batch size for the created datasets.
+        - sampling_rate: (Optional) The sampling rate to downsample the data. Default is 100.
+        - working_dir: (Optional) The working directory to load the pickle files from. If not provided, the current working directory is used.
 
-    # Definition of data for training, validation, and testing.
-    x_train = train[::100]
-    x_test = test[::100]
-    x_val = validation[::100]
-    y_train = train_labels[::100]
-    y_test = test_labels [::100]
-    y_val = validation_labels[::100]
+    Returns:
+        A tuple containing:
+        - train_dataset: TensorFlow dataset containing the training data.
+        - val_dataset: TensorFlow dataset containing the validation data.
+        - test_dataset: TensorFlow dataset containing the test data.
+        - input_dim: Dimension of the input signals.
+        - latent_dim: Dimension of the target labels.
+        - label_dim: Dimension of the target labels.
+    """
+    if working_dir is None:
+        working_dir = os.getcwd()
 
+    train_labels, train_samples = load_data(os.path.join(working_dir, "train_db_1p.pickle"))
+    validation_labels, validation_samples = load_data(os.path.join(working_dir, "validation_db_1p.pickle"))
+    test_labels, test_samples = load_data(os.path.join(working_dir, "test_db_1p.pickle"))
 
-    # Expand dimention labels
+    x_train = train_samples[::sampling_rate]
+    x_val = validation_samples[::sampling_rate]
+    x_test = test_samples[::sampling_rate]
+    y_train = train_labels[::sampling_rate]
+    y_val = validation_labels[::sampling_rate]
+    y_test = test_labels[::sampling_rate]
 
-    """ Expanding the dimensions is mandatory to be able to combine the labels 
-            with the features during the training phase """
+    xy_train = combine_data(y_train, x_train)
+    xy_val = combine_data(y_val, x_val)
+    xy_test = combine_data(y_test, x_test)
 
-    y_train = np.expand_dims(y_train, axis=-1)
-    y_test = np.expand_dims(y_test, axis=-1)
-    y_val = np.expand_dims(y_val, axis=-1)
-
-    # Combine
-    xy_train = np.hstack([x_train,y_train])
-    xy_val = np.hstack([x_val,y_val])
-    xy_test = np.hstack([x_test,y_test])
+    datasets = convert_to_tensor(xy_train, xy_val, xy_test)
+    train_dataset = create_dataset(datasets[0], batch_size)
+    val_dataset = create_dataset(datasets[1], batch_size)
+    test_dataset = create_dataset(datasets[2], batch_size)
 
     input_dim = x_train.shape[1]
     latent_dim = y_train.shape[1]
     label_dim = latent_dim
 
-    # Convert to tensor
-
-    """ The conversion of signals into tensors is necessary to be able to use the data within TensorFlow """
-
-    x_test = tf.convert_to_tensor(x_test, dtype=tf.float32)
-    y_test = tf.convert_to_tensor(y_test, dtype=tf.float32)
-    x_train = tf.convert_to_tensor(x_train, dtype=tf.float32)
-    y_train = tf.convert_to_tensor(y_train, dtype=tf.float32)
-    x_val = tf.convert_to_tensor(x_val, dtype=tf.float32)
-    y_val = tf.convert_to_tensor(y_val, dtype=tf.float32)
-    xy_train = tf.convert_to_tensor(xy_train, dtype=tf.float32)
-    xy_val = tf.convert_to_tensor(xy_val, dtype=tf.float32)
-    xy_test = tf.convert_to_tensor(xy_test, dtype=tf.float32)
-
-    # Dimention
-    train_size = x_train.shape[0]
-    batch_size = 64
-    test_size = x_test.shape[0]
-    val_size = x_val.shape[0]
-
-    # Data Set
-
-    """ The from_tensor_slices() method takes in an input tensor (xy_train, xy_val, or xy_test) 
-        and creates a dataset where each element of the tensor becomes an element of the dataset """
-
-    train_dataset = (tf.data.Dataset.from_tensor_slices(xy_train).shuffle(train_size).batch(batch_size, drop_remainder=True))
-    val_dataset = (tf.data.Dataset.from_tensor_slices(xy_val).batch(batch_size, drop_remainder=True))
-    test_dataset = (tf.data.Dataset.from_tensor_slices(xy_val).batch(batch_size, drop_remainder=True))
+    return train_dataset, val_dataset, test_dataset, input_dim, latent_dim, label_dim
 
 
-     return (
-            train_dataset,
-            val_dataset,
-            test_dataset,
-            input_dim,
-            latent_dim,
-            label_dim
-        )
