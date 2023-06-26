@@ -7,7 +7,20 @@ from configuration_file import conv_architectures, linear_architectures
 
 def test_log_normal_pdf():
     """
-    Test the log_normal_pdf function in the main module
+    Test function for the log_normal_pdf function in the main module.
+
+    This function tests the functionality of the log_normal_pdf function by:
+        - Defining the input tensors for the first test case.
+        - Calling the log_normal_pdf function with the defined input tensors.
+        - Checking the shape and values of the result.
+        - Defining the input parameters for CVAE initialization for the second test case.
+        - Creating an instance of CVAE.
+        - Generating random input tensors.
+        - Calling the log_normal_pdf function with the generated input tensors.
+        - Checking the shape of the output tensor.
+
+    Raises:
+        AssertionError: If any of the assertions fail.
     """
     #First Test
     
@@ -60,7 +73,17 @@ def test_log_normal_pdf():
 
 def test_compute_loss():
     """
-    Test the compute_loss function in the main module
+    Test function for the compute_loss function in the main module.
+
+    This function tests the functionality of the compute_loss function by:
+        - Creating an instance of CVAE.
+        - Generating random input tensors for two test cases.
+        - Calling the compute_loss function with the generated input tensors.
+        - Checking if the output loss is a scalar value.
+        - Checking if the loss for all zeros input is smaller than the loss for random input.
+
+    Raises:
+        AssertionError: If any of the assertions fail.
     """
     # Create an instance of CVAE
     cvae = CVAE(
