@@ -1,68 +1,72 @@
-import main
-import analisi
-import pickle
-import ipdb
-import numpy as np
-from tensorflow import keras
-import random
+import os
+import tensorflow as tf
 
-def test_get_data():
+def get_data(batch_size, sampling_rate=100, working_dir=None):
     """
-    Test the get_data() function of the main module
+    Load and preprocess data for a PPG project and return necessary data and parameters.
+
+    Parameters:
+    - batch_size (int): The desired batch size for training the model.
+    - sampling_rate (int): The sampling rate for selecting data. Default is 100.
+    - working_dir (str): The working directory path. If None, the current working directory will be used.
+
+    Returns:
+    - train_dataset (tf.data.Dataset): TensorFlow dataset containing the training data.
+    - val_dataset (tf.data.Dataset): TensorFlow dataset containing the validation data.
+    - test_dataset (tf.data.Dataset): TensorFlow dataset containing the test data.
+    - input_dim (int): Dimension of the input signals.
+    - latent_dim (int): Dimension of the target labels.
+    - label_dim (int): Dimension of the target labels.
     """
-    batch_size = 64
-    (
-        train_dataset,
-        val_dataset,
-        test_dataset,
-        input_dim,
-        latent_dim,
-        label_dim,
-        input_dim,
-        labels,
-    ) = main.get_data(batch_size)
 
-    # Check if the returned datasets are not None
-    assert train_dataset is not None
-    assert val_dataset is not None
-    assert test_dataset is not None
+    if working_dir is None:
+        working_dir = os.getcwd()
 
-    # Check if the returned input dimensions and labels are of the correct type
-    assert isinstance(input_dim, int)
-    assert isinstance(latent_dim, int)
-    assert isinstance(label_dim, int)
-    assert isinstance(labels, list)
+    # Load data
+    train_labels, train_samples = load_data(os.path.join(working_dir, "train_db_1p.pickle"))
+    validation_labels, validation_samples = load_data(os.path.join(working_dir, "validation_db_1p.pickle"))
+    test_labels, test_samples = load_data(os.path.join(working_dir, "test_db_1p.pickle"))
 
-def test_train_or_load_model():
-    """
-    Test the train_or_load_model() function of the main module
-    """
-    batch_size = 64
-    (
-        train_dataset,
-        val_dataset,
-        test_dataset,
-        input_dim,
-        latent_dim,
-        label_dim,
-        input_dim,
-        labels,
-    ) = main.get_data(batch_size)
+    # Select data based on sampling rate
+    x_train = train_samples[::sampling_rate]
+    x_val = validation_samples[::sampling_rate]
+    x_test = test_samples[::sampling_rate]
+    y_train = train_labels[::sampling_rate]
+    y_val = validation_labels[::sampling_rate]
+    y_test = test_labels[::sampling_rate]
 
-    model = main.train_or_load_model(
-        epochs=100,
-        train_dataset=train_dataset,
-        test_dataset=test_dataset,
-        val_dataset=val_dataset,
-        latent_dim=latent_dim,
-        label_dim=label_dim,
-        conv_architectures=main.conv_architectures,
-        linear_architectures=main.linear_architectures,
-        batch_size=batch_size,
-        input_dim=input_dim,
-    )
+    # Combine data
+    xy_train = combine_data(y_train, x_train)
+    xy_val = combine_data(y_val, x_val)
+    xy_test = combine_data(y_test, x_test)
 
-    # Check if the returned model is an instance of TensorFlow's keras.Model
-    assert isinstance(model, keras.Model)
+    # Convert to TensorFlow tensors
+    datasets = convert_to_tensor(xy_train, xy_val, xy_test)
+
+    # Create datasets
+    train_dataset = create_dataset(datasets[0], batch_size)
+    val_dataset = create_dataset(datasets[1], batch_size)
+    test_dataset = create_dataset(datasets[2], batch_size)
+
+    # Get dimensions
+    input_dim = x_train.shape[1]
+    latent_dim = y_train.shape[1]
+    label_dim = latent_dim
+
+    return train_dataset, val_dataset, test_dataset, input_dim, latent_dim, label_dim, train_labels
+
+
+# Testing the get_data function
+batch_size = 32
+sampling_rate = 50
+working_dir = ""
+train_dataset, val_dataset, test_dataset, input_dim, latent_dim, label_dim, labels = get_data(batch_size, sampling_rate, working_dir)
+print("Train dataset:", train_dataset)
+print("Validation dataset:", val_dataset)
+print("Test dataset:", test_dataset)
+print("Input dimension:", input_dim)
+print("Latent dimension:", latent_dim)
+print("Label dimension:", label_dim)
+
 
 
