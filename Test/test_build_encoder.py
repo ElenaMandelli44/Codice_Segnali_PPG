@@ -10,7 +10,13 @@ import class_CVAE import CVAE
 
 def test_build_encoder():
     """
-    Test the build_encoder method of the CVAE class in the main module
+    Test the build_encoder method of the CVAE class in the main module.
+
+    This function creates an instance of the CVAE class and tests its build_encoder method. It checks
+    if the generated encoder model has the correct architecture, input shape, and output shape.
+
+    Returns:
+        None
     """
     # Define the input parameters for CVAE initialization
     latent_dim = 10
