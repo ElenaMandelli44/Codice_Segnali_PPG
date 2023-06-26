@@ -2,7 +2,8 @@ import main
 import numpy as np
 import tensorflow as tf
 from functions import log_normal_pdf, compute_loss
-from class_CVAE import CVAE, conv_architectures, linear_architectures
+from class_CVAE import CVAE
+from configuration_file import conv_architectures, linear_architectures
 
 def test_log_normal_pdf():
     """
