@@ -62,10 +62,16 @@ def test_compute_loss():
     Test the compute_loss function in the main module
     """
     # Create an instance of CVAE
+    cvae = CVAE(
+        latent_dim=latent_dim,
+        label_dim=label_dim,
+        conv_layers_settings=conv_architectures,
+        linear_layers_settings=linear_architectures,
+        input_dim=input_dim,
+    )
 
-
-    # Generate random input tensor
-    batch_size = 32
+    # Test case 1:Generate random input tensor
+    batch_size = 64
     x = tf.random.normal(shape=(batch_size, cvae.input_dim + cvae.label_dim, 1))
 
     # Call the compute_loss function
@@ -74,6 +80,19 @@ def test_compute_loss():
     # Check if the loss is a scalar value
     assert isinstance(loss, tf.Tensor)
     assert loss.shape == ()
+
+    # Test case 2: All zeros input tensor
+    x_zeros = tf.zeros_like(x)
+
+    # Call the compute_loss function
+    loss_zeros = main.compute_loss(cvae, x_zeros, cvae.input_dim)
+
+    # Check if the loss is a scalar value
+    assert isinstance(loss_zeros, tf.Tensor)
+    assert loss_zeros.shape == ()
+
+    # Check if the loss for all zeros input is smaller than the loss for random input
+    assert loss_zeros < loss
 
 # Run the test functions
 test_log_normal_pdf()
