@@ -24,7 +24,7 @@ def main():
         input_dim,
         latent_dim,
         label_dim,
-        train_labels,
+        labels,
     ) = get_data(batch_size)
     model = train_or_load_model(
         epochs=300,
