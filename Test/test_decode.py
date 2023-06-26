@@ -4,8 +4,15 @@ import tensorflow as tf
 from class_CVAE import CVAE, linear_architectures, conv_architectures
 
 def test_decode():
+of the CVAE class in the main module
     """
-    Test the decode method of the CVAE class in the main module
+    Test the decode method of the CVAE class.
+
+    This function creates an instance of the CVAE class and tests its decode method.
+    It checks if the reconstructed outputs have the expected shape and type.
+
+    Returns:
+        None
     """
     # Define the input parameters for CVAE initialization
     latent_dim = 10
@@ -23,6 +30,11 @@ def test_decode():
 
     # Generate random input tensors
     batch_size = 64
+
+    # Set the random seed
+    tf.random.set_seed(42)
+    np.random.seed(42)
+
     z = tf.random.normal(shape=(batch_size, cvae.latent_dim))
     labels = tf.random.normal(shape=(batch_size, cvae.label_dim))
 
