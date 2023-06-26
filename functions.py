@@ -4,6 +4,7 @@ import tensorflow as tf
 import time
 from IPython import display
 from itertools import product
+from configuration_file import conv_architectures, linear_architectures
 
 def log_normal_pdf(sample, mean, logvar, raxis=1):
     """Compute the log probability density function of a normal distribution.
