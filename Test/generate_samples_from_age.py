@@ -5,7 +5,8 @@ import pandas as pd
 import random
 import pickle
 from generate_signals import generate_samples_from_age
-from class_CVAE import CVAE, conv_architectures, linear_architectures
+from class_CVAE import CVAE
+from configuration_file import conv_architectures, linear_architectures
 
 
 def test_generate_samples_from_age():
