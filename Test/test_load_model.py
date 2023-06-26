@@ -4,6 +4,21 @@ from class_CVAE import CVAE
 from configuration_file import conv_architectures, linear_architectures
 
 def test_load_model():
+    """
+    Test function for the load_model function.
+
+    This function tests the functionality of the load_model function by:
+        - Setting the random seed for reproducibility.
+        - Creating an instance of CVAE with specified parameters.
+        - Saving the model weights.
+        - Calling the load_model function to load the saved model.
+        - Asserting that the loaded model is an instance of CVAE.
+        - Asserting that the loaded model has the same architecture as the original model.
+        - Deleting the saved model weights.
+
+    Raises:
+        AssertionError: If any of the assertions fail.
+    """
     # Set the random seed
     np.random.seed(42)
     tf.random.set_seed(42)
