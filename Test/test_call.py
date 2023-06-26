@@ -10,7 +10,13 @@ import tensorflow as tf
 
 def test_call():
     """
-    Test the call method of the CVAE class in the main module
+    Test the call method of the CVAE class.
+
+    This function creates an instance of the CVAE class and tests its call method. It checks if the
+    forward pass of the CVAE model returns the expected outputs.
+
+    Returns:
+        None
     """
     # Define the input parameters for CVAE initialization
     latent_dim = 10
@@ -39,8 +45,9 @@ def test_call():
     cvae = main.CVAE(latent_dim, label_dim, conv_architectures, linear_architectures, input_dim)
 
     # Define the input data
-    x = tf.random.normal(shape=(64, input_dim, 1))
-    y = tf.random.normal(shape=(64, label_dim))
+    batch_size = 64
+    input_shape = (batch_size, input_dim, 1)
+    label_shape = (batch_size, label_dim)
 
     # Call the call method
     x_logit, z, mean, logvar = cvae.call(x, y)
@@ -50,6 +57,12 @@ def test_call():
     assert z.shape == (64, latent_dim)
     assert mean.shape == (64, latent_dim)
     assert logvar.shape == (64, latent_dim)
+
+    # Check if the returned tensors are of type tf.Tensor
+    assert isinstance(x_logit, tf.Tensor)
+    assert isinstance(z, tf.Tensor)
+    assert isinstance(mean, tf.Tensor)
+    assert isinstance(logvar, tf.Tensor)
 
 # Run the test function
 test_call()
