@@ -22,7 +22,7 @@ def test_decode():
     )
 
     # Generate random input tensors
-    batch_size = 32
+    batch_size = 64
     z = tf.random.normal(shape=(batch_size, cvae.latent_dim))
     labels = tf.random.normal(shape=(batch_size, cvae.label_dim))
 
