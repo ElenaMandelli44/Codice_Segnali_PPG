@@ -5,6 +5,21 @@ from class_CVAE import CVAE
 from configuration_file import conv_architectures, linear_architectures
 
 def test_train_model():
+    """
+    Test function for the train_model function.
+
+    This function tests the functionality of the train_model function by:
+        - Setting the random seed for reproducibility.
+        - Creating an instance of CVAE with specified parameters.
+        - Creating mock datasets for training, test, and validation.
+        - Calling the train_model function to train the model.
+        - Asserting that the returned model is an instance of CVAE.
+        - Calculating the loss on the validation and test datasets.
+        - Asserting that the validation loss is lower than the test loss.
+
+    Raises:
+        AssertionError: If any of the assertions fail.
+    """
     # Set the random seed
     np.random.seed(42)
     tf.random.set_seed(42)
