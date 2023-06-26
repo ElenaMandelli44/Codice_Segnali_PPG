@@ -67,11 +67,14 @@ class CVAE(Model):
 
     def build_encoder(self, conv_architectures, linear_architectures):
         """
-        A sequential model is created, starting with an input layer (tf.keras.layers.InputLayer) that specifies the shape of the input.
-        The elements of the conv_layers list are then added to the model.
-        Next, the elements of the linear_layers list are added to the model.
-        The last layer is a dense layer (tf.keras.layers.Dense) with size 2* latent_dim.
-        This layer returns the mean and log variance of the latent distribution.
+        Build the encoder model based on the provided convolutional and linear architectures.
+    
+        Args:
+            conv_architectures (list): List of dictionaries containing the settings for each convolutional layer.
+            linear_architectures (list): List of dictionaries containing the settings for each linear layer.
+    
+        Returns:
+            tf.keras.Sequential: The constructed encoder model.
         """
         conv_layers = []
 
@@ -101,35 +104,20 @@ class CVAE(Model):
             ]
         )
 
-        """      
-        Decoder network for the convolutional variational autoencoder (CVAE).
 
-        This network takes a sample from the latent distribution, applies a series of transposed convolutional layers
-        followed by dense layers, and outputs a reconstructed input tensor.
-
-        Args:
-            conv_architectures (list): A list of transposed convolutional layer configurations for the decoder network.
-                                Each element in the list should be a tuple containing the keyword arguments for `tf.keras.layers.Conv1D`.
-            linear_architectures (list): A list of dense layer configurations for the decoder network. Each element in
-                the list should be a tuple containing the keyword arguments for `tf.keras.layers.Dense`.
-
-        Attributes:
-            conv_layers (list): A list of transposed convolutional layers in the decoder network.
-            linear_layers (list): A list of dense layers in the decoder network. 
-        """
 
     def build_decoder(self, conv_architectures, linear_architectures):
         """
-        A sequential model is constructed, starting with an input layer (tf.keras.layers.InputLayer) that specifies the input shape.
-        The elements of the linear_layers list are added to the model.
-        A Reshape layer is added to reshape the output to match the computed value in the encoder's output.
-        Then, the elements of the conv_layers list are added to the model.
-        A conv_layer with a single filter is subsequently added.
-        Conv1D layer is then added with just one fileter
-        A Reshape layer is added to reshape the output to match the input_dim value.
-        Another Reshape layer is included to reshape the output to match the dimensions (input_dim, 1).
-
+        Build the decoder model based on the provided convolutional and linear architectures.
+    
+        Args:
+            conv_architectures (list): List of dictionaries containing the settings for each convolutional layer.
+            linear_architectures (list): List of dictionaries containing the settings for each linear layer.
+    
+        Returns:
+            tf.keras.Sequential: The constructed decoder model.
         """
+
         conv_layers = []
 
         conv_settings = conv_architectures[0]
