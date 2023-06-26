@@ -52,100 +52,100 @@ class CVAE(Model):
             self.decoder = self.build_decoder(conv_layers_settings, linear_layers_settings)
             
     def build_encoder(self, conv_architectures, linear_architectures):
-            """
-            Constructs a neural network architecture for the encoder.
+        """
+        Constructs a neural network architecture for the encoder.
+    
+        Args:
+            conv_architectures (list): A list of configurations for the convolutional layers.
+            linear_architectures (list): A list of configurations for the linear layers.
+    
+        Returns:
+            tf.keras.Sequential: A sequential neural network model for the encoder.
+        """
         
-            Args:
-                conv_architectures (list): A list of configurations for the convolutional layers.
-                linear_architectures (list): A list of configurations for the linear layers.
-        
-            Returns:
-                tf.keras.Sequential: A sequential neural network model for the encoder.
-            """
-        
-            conv_layers = []
+        conv_layers = []
 
-            conv_settings = conv_architectures[0]  
+        conv_settings = conv_architectures[0]  
 
-            conv_layers.append(tf.keras.layers.Conv1D(**conv_settings[0]))
-            try:
-                conv_layers.append(tf.keras.layers.Conv1D(**conv_settings[1]))
-            except:
-                import ipdb
-
-                ipdb.set_trace()
-            conv_layers.append(tf.keras.layers.Conv1D(**conv_settings[2]))
-
-
-            linear_layers = []
-                    
-            linear_settings = linear_architectures [0]
-            linear_layers.append(tf.keras.layers.Dense(**linear_settings[0]))
-            linear_layers.append(tf.keras.layers.Dense(**linear_settings[1]))
-
-
-             return tf.keras.Sequential(
-                        [
-                            tf.keras.layers.InputLayer(input_shape=(self.input_dim, 1)),
-                            *conv_layers,
-                            *linear_layers,
-                            tf.keras.layers.Dense(2 * self.latent_dim),
-                        ]
-                    )
-        
-        
-        def build_decoder(self, conv_architectures, linear_architectures):
-            """      
-                Decoder network for the convolutional variational autoencoder (CVAE).
-        
-                This network takes a sample from the latent distribution, applies a series of transposed convolutional layers
-                followed by dense layers, and outputs a reconstructed input tensor.
-                
-        
-                Args:
-                    conv_architectures (list): A list of transposed convolutional layer configurations for the decoder network.
-                                        Each element in the list should be a tuple containing the keyword arguments for `tf.keras.layers.Conv1D`.
-                    linear_architectures (list): A list of dense layer configurations for the decoder network. Each element in
-                        the list should be a tuple containing the keyword arguments for `tf.keras.layers.Dense`.
-        
-                Attributes:
-                    conv_layers (list): A list of transposed convolutional layers in the decoder network.
-                    linear_layers (list): A list of dense layers in the decoder network. 
-            """
-        
-            conv_layers = []   
-                    
-            conv_settings = conv_architectures[0]
-            try:
-                conv_layers.append(tf.keras.layers.Conv1D(**conv_settings[2]))
-            except:
-                import ipdb
-                ipdb.set_trace()
+        conv_layers.append(tf.keras.layers.Conv1D(**conv_settings[0]))
+        try:
             conv_layers.append(tf.keras.layers.Conv1D(**conv_settings[1]))
-            conv_layers.append(tf.keras.layers.Conv1D(**conv_settings[0]))
+        except:
+            import ipdb
+
+            ipdb.set_trace()
+        conv_layers.append(tf.keras.layers.Conv1D(**conv_settings[2]))
 
 
-            linear_layers = []
+        linear_layers = []
+                
+        linear_settings = linear_architectures [0]
+        linear_layers.append(tf.keras.layers.Dense(**linear_settings[0]))
+        linear_layers.append(tf.keras.layers.Dense(**linear_settings[1]))
 
-            linear_settings = linear_architectures [0]
-            linear_layers.append(tf.keras.layers.Dense(**linear_settings[1]))
-            linear_layers.append(tf.keras.layers.Dense(**linear_settings[0]))
 
-                  
-            return tf.keras.Sequential(
+         return tf.keras.Sequential(
                     [
-                        tf.keras.layers.InputLayer(
-                            input_shape=(self.latent_dim + self.label_dim)
-                        ),  
-                        *linear_layers,
-                        tf.keras.layers.Reshape((256, 1)),
+                        tf.keras.layers.InputLayer(input_shape=(self.input_dim, 1)),
                         *conv_layers,
-                        tf.keras.layers.Conv1DTranspose(filters=1, kernel_size=1, strides=1),
-                        tf.keras.layers.Flatten(),
-                        tf.keras.layers.Dense(1024),
+                        *linear_layers,
+                        tf.keras.layers.Dense(2 * self.latent_dim),
                     ]
                 )
+        
+        
+    def build_decoder(self, conv_architectures, linear_architectures):
+        """      
+            Decoder network for the convolutional variational autoencoder (CVAE).
+    
+            This network takes a sample from the latent distribution, applies a series of transposed convolutional layers
+            followed by dense layers, and outputs a reconstructed input tensor.
             
+    
+            Args:
+                conv_architectures (list): A list of transposed convolutional layer configurations for the decoder network.
+                                    Each element in the list should be a tuple containing the keyword arguments for `tf.keras.layers.Conv1D`.
+                linear_architectures (list): A list of dense layer configurations for the decoder network. Each element in
+                    the list should be a tuple containing the keyword arguments for `tf.keras.layers.Dense`.
+    
+            Attributes:
+                conv_layers (list): A list of transposed convolutional layers in the decoder network.
+                linear_layers (list): A list of dense layers in the decoder network. 
+        """
+    
+        conv_layers = []   
+                
+        conv_settings = conv_architectures[0]
+        try:
+            conv_layers.append(tf.keras.layers.Conv1D(**conv_settings[2]))
+        except:
+            import ipdb
+            ipdb.set_trace()
+        conv_layers.append(tf.keras.layers.Conv1D(**conv_settings[1]))
+        conv_layers.append(tf.keras.layers.Conv1D(**conv_settings[0]))
+
+
+        linear_layers = []
+
+        linear_settings = linear_architectures [0]
+        linear_layers.append(tf.keras.layers.Dense(**linear_settings[1]))
+        linear_layers.append(tf.keras.layers.Dense(**linear_settings[0]))
+
+              
+        return tf.keras.Sequential(
+                [
+                    tf.keras.layers.InputLayer(
+                        input_shape=(self.latent_dim + self.label_dim)
+                    ),  
+                    *linear_layers,
+                    tf.keras.layers.Reshape((256, 1)),
+                    *conv_layers,
+                    tf.keras.layers.Conv1DTranspose(filters=1, kernel_size=1, strides=1),
+                    tf.keras.layers.Flatten(),
+                    tf.keras.layers.Dense(1024),
+                ]
+            )
+        
 
 # The CVAE model can also be used to generate new samples from the learned distribution using the sample() method.
  
