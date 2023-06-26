@@ -1,7 +1,7 @@
 from preprocessing import get_data
 from functions import train_or_load_model
 from generate_signals import save_samples_from_age_range
-from class_CVAE import conv_architectures, linear_architectures
+from configuration_file import conv_architectures, linear_architectures
 
 def main():
     
