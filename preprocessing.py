@@ -113,6 +113,6 @@ def get_data(batch_size, sampling_rate=100, working_dir=None):
     latent_dim = y_train.shape[1]
     label_dim = latent_dim
 
-    return train_dataset, val_dataset, test_dataset, input_dim, latent_dim, label_dim
+    return train_dataset, val_dataset, test_dataset, input_dim, latent_dim, label_dim, train_labels
 
 
