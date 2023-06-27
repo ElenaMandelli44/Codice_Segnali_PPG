@@ -1,5 +1,4 @@
 import main
-import analisi
 import pickle
 import ipdb
 import numpy as np
