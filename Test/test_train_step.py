@@ -6,7 +6,24 @@ from class_CVAE import CVAE, conv_architectures, linear_architectures
 
 def test_train_step():
     """
-    Test the train_step function in the main module
+    Test the train_step function in the main module.
+
+    This function tests the train_step function in the main module by performing the following steps:
+    1. Initializes the input parameters for CVAE (Conditional Variational Autoencoder).
+    2. Creates an instance of CVAE with the specified parameters.
+    3. Generates a random input tensor.
+    4. Creates an instance of the Adam optimizer.
+    5. Calls the train_step function with the CVAE, input tensor, optimizer, and input dimension.
+    6. Checks if the returned loss value is a scalar tensor.
+
+    Returns:
+        None
+
+    Raises:
+        AssertionError: If the loss value is not a scalar tensor or if the shape of the loss tensor is not ().
+
+    Example usage:
+        test_train_step()
     """
     # Define the input parameters for CVAE initialization
     latent_dim = 10
