@@ -25,7 +25,7 @@ def main():
         latent_dim,
         label_dim,
         labels,
-    ) = get_data(batch_size)
+    ) = get_data(batch_size, sampling_rate=100, working_dir=None)
     
     train_model_flag = not os.path.exists("trained_model.index")
 
