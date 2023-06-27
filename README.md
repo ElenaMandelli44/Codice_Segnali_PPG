@@ -13,6 +13,16 @@ The project is coded in Python and makes use of popular scientific packages like
 First of all ensure that a right Python version is installed (Python >= 3.10.9 is required).
 The [Anaconda/Miniconda](https://www.anaconda.com/) python version is recomended.
 
+## clone project
+first of all open the terminal
+
+```
+git version
+cd Desktop # -> or wherever you wanto to clone the repository
+git clone https://github.com/ElenaMandelli44/Codice_Segnali_PPG
+cd Codice_Segnali_PPG
+```
+
 ### Installing prerequisites
 
 To install the prerequisites type:
